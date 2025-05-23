@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valor UF Hoy</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+      background: #f8fafc;
+      color: #222;
+    }
+
+    .uf-box {
+      background: #f0f9ff;
+      box-shadow: 0 2px 12px 0 #0001;
+      border-radius: 16px;
+      padding: 1.5rem 2.5rem;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin: 1.5rem 0 2rem 0;
+      display: inline-block;
+      color: #111827;
+      transition: all 0.3s ease;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    input {
+      padding: 0.7rem 1rem;
+      font-size: 1.3rem;
+      width: 140px;
+      text-align: right;
+      border-radius: 8px;
+      border: 1px solid #d0d7de;
+      box-shadow: 0 1px 4px #0001;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    button {
+      margin-left: 10px;
+      padding: 0.7rem 1.1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #d0d7de;
+      background: #f3f6fa;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: #e6edf4;
+    }
+
+    .converted {
+      font-size: 1.3rem;
+      margin-top: 14px;
+      color: #15803d;
+      font-weight: 600;
+      min-height: 1.5em;
+      transition: all 0.3s ease;
+    }
+
+    .input-group {
+      margin: 1.5rem 0 0.5rem 0;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    footer a {
+      color: #0f62fe;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    @media (max-width: 480px) {
+      .uf-box {
+        font-size: 1.7rem;
+        padding: 1rem 1.5rem;
+      }
+      input {
+        width: 100px;
+        font-size: 1.1rem;
+      }
+      button {
+        padding: 0.6rem 0.9rem;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>💰 UF de hoy — 22 de mayo de 2025</h1>
+  <div class="uf-box" id="valorUF">$37.420,55 CLP</div>
+
+  <div class="input-group">
+    <label for="ufInput">Monto en UF:</label>
+    <input type="number" id="ufInput" min="0" step="any" aria-label="Monto en UF" placeholder="Ej: 10,5" />
+    <button id="clearBtn" title="Limpiar"><span aria-hidden="true">🧹</span> Limpiar</button>
+    <div class="converted" id="convertedCLP"></div>
+  </div>
+
+  <footer>
+    Fuente: Banco Central de Chile · Datos extraídos el 22 de mayo de 2025 - 10:00<br>
+    Repositorio: <a href="https://github.com/tuusuario/valoruf" target="_blank" rel="noopener noreferrer">GitHub 🔗</a>
+  </footer>
+
+  <script>
+    const UF_VALUE = 37420.55;
+    const defaultInput = "22.5";
+    const input = document.getElementById("ufInput");
+    const result = document.getElementById("convertedCLP");
+    const clearBtn = document.getElementById("clearBtn");
+
+    const savedUF = localStorage.getItem("lastUF") || defaultInput;
+    input.value = savedUF;
+    convert(savedUF);
+
+    input.addEventListener("input", () => {
+      let value = input.value.replace(",", ".");
+      if (isNaN(value)) return;
+      localStorage.setItem("lastUF", value);
+      convert(value);
+    });
+
+    clearBtn.addEventListener("click", () => {
+      input.value = "";
+      localStorage.removeItem("lastUF");
+      result.textContent = "";
+      input.focus();
+    });
+
+    function convert(ufAmount) {
+      if (!ufAmount || parseFloat(ufAmount) === 0) {
+        result.textContent = "";
+        return;
+      }
+      const clp = (parseFloat(ufAmount) * UF_VALUE).toLocaleString("es-CL", {
+        style: "currency",
+        currency: "CLP",
+        minimumFractionDigits: 2,
+      });
+
+      const ufFormatted = parseFloat(ufAmount).toLocaleString("es-CL", {
+        maximumFractionDigits: 4,
+      });
+
+      result.textContent = `${ufFormatted} UF = ${clp}`;
+    }
+  </script>
+</body>
+</html>
