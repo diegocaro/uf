@@ -109,15 +109,15 @@
   <h1>22 de mayo de 2025</h1>
   
   <div class="conversion-container">
-    <div class="conversion-input">
-      <div class="currency-label">UF</div>
-      <input type="number" id="ufInput" min="0" step="any" aria-label="Monto en UF" placeholder="1" />
-    </div>
-    
-    <div class="conversion-input">
-      <div class="currency-label">CLP</div>
-      <input type="text" id="clpOutput" min="0" step="any" aria-label="Monto en CLP" readonly style="background:#f5f7f9; cursor:not-allowed;" />
-    </div>
+      <div class="conversion-input">
+        <div class="currency-label">UF</div>
+        <input type="text" id="ufInput" inputmode="numeric" pattern="^\d+([,\.]\d{1,2})?$" aria-label="Monto en UF" placeholder="22,5" title="Ingrese un UF a convertir (ej: 22,5)" />
+      </div>
+      
+      <div class="conversion-input">
+        <div class="currency-label">CLP</div>
+        <input type="text" id="clpOutput" min="0" step="any" aria-label="Monto en CLP" readonly style="background:#f5f7f9; cursor:copy;" />
+      </div>
     <span id="copyFeedback" style="display:none;color:#15803d;font-size:1rem;margin-top:0.5em;">¡Copiado al portapapeles!</span>
   </div>
   
@@ -125,12 +125,12 @@
 
   <footer>
     Fuente: Banco Central de Chile · Datos extraídos el 22 de mayo de 2025 - 10:00<br>
-    Repositorio: <a href="https://github.com/tuusuario/valoruf" target="_blank" rel="noopener noreferrer">GitHub 🔗</a>
+    Repositorio: <a href="https://github.com/tuusuario/valoruf">GitHub 🔗</a>
   </footer>
 
   <script>
-    const UF_VALUE = 37420.55;
-    const defaultInput = "22.5";
+    const UF_VALUE = 39169.25;
+    const defaultInput = "22,5";
     const ufInput = document.getElementById("ufInput");
     const clpOutput = document.getElementById("clpOutput");
 
@@ -142,13 +142,52 @@
     // Actualizar al cambiar el valor de entrada
     ufInput.addEventListener("input", () => {
       let value = ufInput.value.replace(",", ".");
+      
       if (value === "" || isNaN(value)) {
         clpOutput.value = "";
         return;
       }
       
-      localStorage.setItem("lastUF", value);
+      localStorage.setItem("lastUF", ufInput.value);
       updateConversion();
+    });
+
+    // Prevenir entrada de caracteres inválidos
+    ufInput.addEventListener("keydown", (e) => {
+      // Permitir teclas de control (backspace, delete, arrows, tab, etc.)
+      if (e.key === "Backspace" || e.key === "Delete" || e.key === "ArrowLeft" || 
+          e.key === "ArrowRight" || e.key === "Tab" || e.key === "Enter") {
+        return;
+      }
+      
+      // Permitir números
+      if (e.key >= "0" && e.key <= "9") {
+        return;
+      }
+      
+      // Permitir coma o punto decimal (solo uno)
+      if ((e.key === "," || e.key === ".") && !ufInput.value.includes(",") && !ufInput.value.includes(".")) {
+        return;
+      }
+      
+      // Bloquear cualquier otra tecla
+      e.preventDefault();
+    });
+
+    // Validar y limpiar el contenido pegado
+    ufInput.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const pastedText = (e.clipboardData || window.clipboardData).getData("text");
+      const cleanedText = pastedText.replace(/[^0-9,.]/g, "");
+      
+      // Solo permitir un separador decimal
+      const commaCount = (cleanedText.match(/,/g) || []).length;
+      const dotCount = (cleanedText.match(/\./g) || []).length;
+      
+      if (commaCount + dotCount <= 1) {
+        ufInput.value = cleanedText;
+        ufInput.dispatchEvent(new Event("input"));
+      }
     });
 
     // Función para actualizar la conversión
@@ -188,7 +227,7 @@
         setTimeout(() => {
           clpOutput.style.background = "#f5f7f9";
           feedback.style.display = "none";
-        }, 1200);
+        }, 2000);
       }
     });
   </script>
