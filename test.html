@@ -15,56 +15,45 @@
       color: #222;
     }
 
-    .uf-box {
-      background: #f0f9ff;
-      box-shadow: 0 2px 12px 0 #0001;
-      border-radius: 16px;
-      padding: 1.5rem 2.5rem;
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin: 1.5rem 0 2rem 0;
-      display: inline-block;
-      color: #111827;
-      transition: all 0.3s ease;
+    .uf-footer {
+      font-size: 0.8rem;
+      margin-top: 1rem;
     }
 
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
+    .conversion-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .conversion-input {
+      display: flex;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      overflow: hidden;
+      width: 100%;
+      align-items: center;
+    }
+
+    .currency-label {
+      padding: 0.8rem;
+      font-size: 1.1rem;
+      background: #f5f7f9;
+      color: #555;
+      width: 60px;
+      text-align: center;
       font-weight: 500;
+      border-right: 1px solid #d0d7de;
     }
 
-    input {
-      padding: 0.7rem 1rem;
+    .conversion-input input {
+      flex: 1;
+      padding: 0.8rem;
       font-size: 1.3rem;
-      width: 140px;
+      border: none;
       text-align: right;
-      border-radius: 8px;
-      border: 1px solid #d0d7de;
-      box-shadow: 0 1px 4px #0001;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    input:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-    }
-
-    button {
-      margin-left: 10px;
-      padding: 0.7rem 1.1rem;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid #d0d7de;
-      background: #f3f6fa;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    button:hover {
-      background: #e6edf4;
     }
 
     .converted {
@@ -76,13 +65,9 @@
       transition: all 0.3s ease;
     }
 
-    .input-group {
-      margin: 1.5rem 0 0.5rem 0;
-    }
-
     h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
+      font-size: 1.5rem;
+      font-weight: 500;
       margin-bottom: 0.5rem;
       letter-spacing: 0.5px;
     }
@@ -114,31 +99,29 @@
     }
 
     @media (max-width: 480px) {
-      .uf-box {
-        font-size: 1.7rem;
-        padding: 1rem 1.5rem;
-      }
-      input {
-        width: 100px;
+      .conversion-input input {
         font-size: 1.1rem;
-      }
-      button {
-        padding: 0.6rem 0.9rem;
-        font-size: 0.95rem;
       }
     }
   </style>
 </head>
 <body>
-  <h1>💰 UF de hoy — 22 de mayo de 2025</h1>
-  <div class="uf-box" id="valorUF">$37.420,55 CLP</div>
-
-  <div class="input-group">
-    <label for="ufInput">Monto en UF:</label>
-    <input type="number" id="ufInput" min="0" step="any" aria-label="Monto en UF" placeholder="Ej: 10,5" />
-    <button id="clearBtn" title="Limpiar"><span aria-hidden="true">🧹</span> Limpiar</button>
-    <div class="converted" id="convertedCLP"></div>
+  <h1>22 de mayo de 2025</h1>
+  
+  <div class="conversion-container">
+    <div class="conversion-input">
+      <div class="currency-label">UF</div>
+      <input type="number" id="ufInput" min="0" step="any" aria-label="Monto en UF" placeholder="1" />
+    </div>
+    
+    <div class="conversion-input">
+      <div class="currency-label">CLP</div>
+      <input type="text" id="clpOutput" min="0" step="any" aria-label="Monto en CLP" readonly style="background:#f5f7f9; cursor:not-allowed;" />
+    </div>
+    <span id="copyFeedback" style="display:none;color:#15803d;font-size:1rem;margin-top:0.5em;">¡Copiado al portapapeles!</span>
   </div>
+  
+  <div class="uf-footer" id="valorUF">1 UF = $37.420,55 CLP</div>
 
   <footer>
     Fuente: Banco Central de Chile · Datos extraídos el 22 de mayo de 2025 - 10:00<br>
@@ -148,45 +131,66 @@
   <script>
     const UF_VALUE = 37420.55;
     const defaultInput = "22.5";
-    const input = document.getElementById("ufInput");
-    const result = document.getElementById("convertedCLP");
-    const clearBtn = document.getElementById("clearBtn");
+    const ufInput = document.getElementById("ufInput");
+    const clpOutput = document.getElementById("clpOutput");
 
+    // Cargar valor guardado o usar valor predeterminado
     const savedUF = localStorage.getItem("lastUF") || defaultInput;
-    input.value = savedUF;
-    convert(savedUF);
+    ufInput.value = savedUF;
+    updateConversion();
 
-    input.addEventListener("input", () => {
-      let value = input.value.replace(",", ".");
-      if (isNaN(value)) return;
-      localStorage.setItem("lastUF", value);
-      convert(value);
-    });
-
-    clearBtn.addEventListener("click", () => {
-      input.value = "";
-      localStorage.removeItem("lastUF");
-      result.textContent = "";
-      input.focus();
-    });
-
-    function convert(ufAmount) {
-      if (!ufAmount || parseFloat(ufAmount) === 0) {
-        result.textContent = "";
+    // Actualizar al cambiar el valor de entrada
+    ufInput.addEventListener("input", () => {
+      let value = ufInput.value.replace(",", ".");
+      if (value === "" || isNaN(value)) {
+        clpOutput.value = "";
         return;
       }
-      const clp = (parseFloat(ufAmount) * UF_VALUE).toLocaleString("es-CL", {
+      
+      localStorage.setItem("lastUF", value);
+      updateConversion();
+    });
+
+    // Función para actualizar la conversión
+    function updateConversion() {
+      const ufAmount = parseFloat(ufInput.value) || 0;
+      if (ufAmount === 0) {
+        clpOutput.value = "";
+        return;
+      }
+      
+      // Calcular el valor en pesos chilenos
+      const clpAmount = ufAmount * UF_VALUE;
+      
+      // Mostrar el resultado formateado en el campo CLP (con formato visual, igual que en valorUF)
+      clpOutput.value = clpAmount.toLocaleString("es-CL", {
         style: "currency",
         currency: "CLP",
-        minimumFractionDigits: 2,
+        maximumFractionDigits: 0
       });
-
-      const ufFormatted = parseFloat(ufAmount).toLocaleString("es-CL", {
-        maximumFractionDigits: 4,
-      });
-
-      result.textContent = `${ufFormatted} UF = ${clp}`;
+      
+      // Formatear el valor de UF en el pie de página
+      document.getElementById("valorUF").textContent = 
+        `1 UF = ${UF_VALUE.toLocaleString("es-CL", {
+          style: "currency",
+          currency: "CLP",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })} CLP`;
     }
+
+    clpOutput.addEventListener("click", () => {
+      if (clpOutput.value) {
+        navigator.clipboard.writeText(clpOutput.value);
+        clpOutput.style.background = "#d1fae5"; // feedback visual
+        const feedback = document.getElementById("copyFeedback");
+        feedback.style.display = "inline";
+        setTimeout(() => {
+          clpOutput.style.background = "#f5f7f9";
+          feedback.style.display = "none";
+        }, 1200);
+      }
+    });
   </script>
 </body>
 </html>
