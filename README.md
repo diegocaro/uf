@@ -1,87 +1,96 @@
-# UF Scraper
+# 📈 UF Scraper
 
-Este proyecto extrae los valores de la Unidad de Fomento (UF) desde el sitio web del Banco Central de Chile y los muestra en una página web estática.
+Extrae automáticamente los valores de la **Unidad de Fomento (UF)** desde el sitio web del Banco Central de Chile y genera una elegante página web con un conversor interactivo en tiempo real.
 
-## Características
+---
 
-- Extracción de datos de la UF directamente desde el Banco Central usando pandas.
-- Guardado de datos en formato JSON.
-- Generación de una página web estática con los valores de la UF.
-- Pruebas automatizadas con pytest.
+## 🚀 Características
 
-## Requisitos
+* 🔍 **Scraping** de datos actualizado desde el Banco Central usando `pandas` + `lxml`.
+* 💾 Guardado de datos en **formato JSON**.
+* 🌐 Interfaz web dinámica que carga los valores más recientes automáticamente.
+* 🔄 Conversor **UF → CLP** con validación de formato chileno.
+* 📋 Opción de **copiar al portapapeles** los resultados del conversor.
+* 🧪 **Pruebas automatizadas** con `pytest`.
 
-- Python 3.10 o superior
-- uv (para gestión de dependencias)
+---
 
-## Instalación
+## 🧰 Requisitos
 
-1. Clona este repositorio:
-```bash
-git clone https://github.com/tu-usuario/uf-scraper.git
-cd uf-scraper
-```
+* Python `3.12+`
+* [`uv`](https://github.com/astral-sh/uv) para gestión de dependencias (¡más rápido que pip!)
 
-2. Instala las dependencias con uv:
-```bash
-uv pip install -e ".[dev]"
-```
+---
 
-## Uso
+## ⚙️ Instalación
 
-Para ejecutar el scraper y generar la página web:
+1. Clona el repositorio:
 
 ```bash
-python main.py
+git clone https://github.com/diegocaro/uf.git
+cd uf
 ```
 
-Esto creará:
-- Un archivo JSON con los datos en `data/uf.json`
-- Una página web estática en `index.html`
+2. Instala las dependencias:
 
-## Estructura del proyecto
-
+```bash
+uv sync --extra dev
 ```
+
+---
+
+## 🏃 Uso
+
+Ejecuta el scraper para generar los datos:
+
+```bash
+uv run python -m uf.scraper
+```
+
+Esto generará:
+
+* 📄 `www/data/uf.json` — Archivo con los datos actualizados.
+* 🌐 `www/index.html` — Página web lista para abrir en tu navegador.
+* 🔁 Carga dinámica de datos vía JavaScript + conversor funcional UF/CLP.
+
+También puedes definir una ruta de salida personalizada:
+
+```bash
+uv run python -m uf.scraper --output ruta/personalizada/uf.json
+```
+
+---
+
+## 🗂️ Estructura del proyecto
+
+```plaintext
 uf/
-├── data/            # Directorio para almacenar los datos extraídos
-├── src/             # Código fuente
-│   ├── __init__.py
-│   ├── scraper.py   # Módulo para extraer datos
-│   └── web.py       # Módulo para generar la página web
-│   └── templates/   # Plantillas HTML
-│       └── uf_template.html # Plantilla para la página web
-├── tests/           # Pruebas automatizadas
-│   ├── __init__.py
+├── uf/              # Código fuente principal
+│   └── scraper.py   # Extracción de datos de la UF
+├── tests/           # Pruebas con pytest
 │   ├── test_scraper.py
-│   ├── test_web.py
-│   └── data/        # Datos de prueba
-│       ├── expected.json
-│       └── raw.html
-├── main.py          # Script principal
-├── pyproject.toml   # Configuración del proyecto
-└── README.md        # Este archivo
+│   └── data/        # Fixtures: HTML crudo y JSON esperado
+├── www/             # Sitio web generado
+│   ├── index.html
+│   └── data/uf.json # Los datos extraídos y procesados
+├── pyproject.toml   # Configuración de proyecto
+├── uv.lock          # Lockfile de dependencias
+└── README.md        # Este documento ✨
 ```
 
-## Pruebas
+---
 
-Para ejecutar las pruebas:
+## ✅ Pruebas
+
+Ejecuta los tests con:
 
 ```bash
-pytest
+uv run pytest
 ```
 
-## Licencia
+---
 
-MIT
+## 📄 Licencia
 
-## Pruebas
+Distribuido bajo licencia **MIT**. Libre para usar, modificar y compartir.
 
-Para ejecutar las pruebas:
-
-```bash
-pytest
-```
-
-## Licencia
-
-MIT
