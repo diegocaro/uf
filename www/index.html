@@ -111,11 +111,11 @@
   <div class="conversion-container">
       <div class="conversion-input">
         <div class="currency-label">UF</div>
-        <input type="text" id="ufInput" inputmode="numeric" pattern="^\d+([,\.]\d{1,2})?$" aria-label="Monto en UF" placeholder="22,5" title="Ingrese un UF a convertir (ej: 22,5)" />
+        <input type="text" id="ufInput" inputmode="decimal" aria-label="Monto en UF" placeholder="22,5" title="Ingrese un UF a convertir (ej: 22,5)" />
       </div>
       
       <div class="conversion-input">
-        <div class="currency-label">$</div>
+        <div class="currency-label">CLP</div>
         <input type="text" id="clpOutput" aria-label="Monto en pesos chilenos (CLP)" readonly style="background:#f5f7f9; cursor:copy;" />
       </div>
     <span id="copyFeedback" style="display:none;color:#15803d;font-size:1rem;margin-top:0.5em;">¡Copiado al portapapeles!</span>
@@ -197,7 +197,10 @@
     // Actualizar al cambiar el valor de entrada
     ufInput.addEventListener("input", () => {
       try {
-        localStorage.setItem("lastUF", ufInput.value);
+        // Only save to localStorage if the input is valid
+        if (isValidChileanNumber(ufInput.value)) {
+          localStorage.setItem("lastUF", ufInput.value);
+        }
         updateConversion();
       } catch (error) {
         console.error('Error during conversion:', error);
@@ -205,13 +208,52 @@
       }
     });
 
+    // Add validation on blur to show error message
+    ufInput.addEventListener("blur", () => {
+      if (ufInput.value && !isValidChileanNumber(ufInput.value)) {
+        clpOutput.value = "";
+      }
+    });
+
+    // Function to validate Chilean number format
+    function isValidChileanNumber(input) {
+      if (!input || input.trim() === "") return true; // Empty is valid
+      
+      // Chilean number format: digits with optional comma for decimals
+      // Examples: "123", "123,45", "1234,56"
+      const chileanNumberRegex = /^\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?$|^\d+(?:,\d{1,2})?$/;
+      return chileanNumberRegex.test(input.trim());
+    }
+    
+    // Function to parse Chilean number format to float
+    function parseChileanNumber(input) {
+      if (!input) return NaN;
+      
+      // Remove thousands separators (periods) and replace decimal comma with dot
+      let cleaned = input.trim()
+        .replace(/\./g, '') // Remove thousands separators
+        .replace(',', '.'); // Replace decimal comma with dot
+      
+      return parseFloat(cleaned);
+    }
+    
     // Función para actualizar la conversión
     function updateConversion() {
       try {
-        let value = ufInput.value.replace(",", ".");
-        const ufAmount = parseFloat(value);
+        const inputValue = ufInput.value;
         
-        if (value === "" || isNaN(ufAmount) || ufAmount <= 0) {
+        // Validate Chilean number format
+        if (!isValidChileanNumber(inputValue)) {
+          clpOutput.value = "";
+          return;
+        }
+        
+        // Clear any previous validation errors
+        ufInput.setCustomValidity("");
+        
+        const ufAmount = parseChileanNumber(inputValue);
+        
+        if (inputValue === "" || isNaN(ufAmount) || ufAmount <= 0) {
           clpOutput.value = "";
           return;
         }
