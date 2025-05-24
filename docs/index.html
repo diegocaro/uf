@@ -125,7 +125,7 @@
   <div class="uf-footer" id="valorUF">1 UF = $37.420,55 CLP</div>
 
   <footer>
-    Fuente: <a href="" id="sourceLink" target="_blank">Banco Central</a> · Actualizado el <a href="data/uf.json" download="uf.json" title="Descargar datos en formato JSON" id="dataExtractedText">22 de mayo de 2025 - 10:00</a><br>
+    Fuente: <a href="" id="sourceLink" target="_blank">Banco Central</a> · Actualizado el <a href="data/uf.json" download="uf.json" title="Descargar datos en formato JSON" id="dataExtractedText">22 de mayo de 2025</a><br>
     Repositorio: <a href="https://github.com/diegocaro/uf">GitHub 🔗</a>
   </footer>
 
@@ -141,9 +141,9 @@
         const response = await fetch('data/uf.json');
         const data = await response.json();
         
-        // Get current date in YYYY-MM-DD format
-        const today = new Date();
-        const currentDate = today.toISOString().split('T')[0];
+        // Get current date in Chile timezone in YYYY-MM-DD format
+        const chileTime = new Date().toLocaleString("en-US", {timeZone: "America/Santiago"});
+        const currentDate = new Date(chileTime).toISOString().split('T')[0];
         
         // Find the current date in the dataset
         let ufData = data.data.find(item => item.fecha === currentDate);
@@ -165,16 +165,25 @@
         }
         
         // Update the date in the heading
-        const dateObj = new Date(ufData.fecha);
-        const options = { day: 'numeric', month: 'long', year: 'numeric' };
-        document.querySelector('h1').textContent = dateObj.toLocaleDateString('es-CL', options);
+        const formatter = new Intl.DateTimeFormat('es-CL', {
+          day: 'numeric',
+          month: 'long', 
+          year: 'numeric',
+          timeZone: 'America/Santiago'
+        });
+        document.querySelector('h1').textContent = formatter.format(new Date(ufData.fecha + 'T12:00:00'));
+
         
         // Update the conversion with the new UF value
         updateConversion();
         
         // Update source date in footer
         const updateDateObj = new Date(data.updated_at);
-        const footerDateStr = updateDateObj.toLocaleDateString('es-CL', options);
+        const footerDateStr = updateDateObj.toLocaleDateString('es-CL', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
         document.getElementById('dataExtractedText').textContent = `${footerDateStr}`;
       } catch (error) {
         console.error('Error fetching UF data:', error);
