@@ -42,8 +42,10 @@
       font-size: 1.1rem;
       background: #f5f7f9;
       color: #555;
-      width: 60px;
-      text-align: center;
+      min-width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       font-weight: 500;
       border-right: 1px solid #d0d7de;
     }
@@ -55,6 +57,7 @@
       border: none;
       text-align: right;
       outline: none;
+      min-width: 0; /* Necesario para inputs en contenedores flex */
     }
 
     .converted {
@@ -117,7 +120,7 @@
       
       <div class="conversion-input">
         <div class="currency-label">CLP</div>
-        <input type="text" id="clpOutput" aria-label="Monto en pesos chilenos (CLP)" readonly style="background:#f5f7f9; cursor:copy;" />
+        <input type="text" id="clpOutput" aria-label="Monto en pesos chilenos (CLP)" readonly style="background:#f5f7f9;" />
       </div>
     <span id="copyFeedback" style="display:none;color:#15803d;font-size:1rem;margin-top:0.5em;">¡Copiado al portapapeles!</span>
   </div>
