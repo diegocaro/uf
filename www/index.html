@@ -187,11 +187,6 @@
     // Cargar valor guardado o usar valor predeterminado
     const savedUF = localStorage.getItem("lastUF") || defaultInput;
     ufInput.value = savedUF;
-    
-    // Wait for UF value to be loaded before updating
-    if (UF_VALUE > 0) {
-      updateConversion();
-    }
 
     // Actualizar al cambiar el valor de entrada
     ufInput.addEventListener("input", () => {
