@@ -115,8 +115,8 @@
       </div>
       
       <div class="conversion-input">
-        <div class="currency-label">CLP</div>
-        <input type="text" id="clpOutput" aria-label="Monto en CLP" readonly style="background:#f5f7f9; cursor:copy;" />
+        <div class="currency-label">$</div>
+        <input type="text" id="clpOutput" aria-label="Monto en pesos chilenos (CLP)" readonly style="background:#f5f7f9; cursor:copy;" />
       </div>
     <span id="copyFeedback" style="display:none;color:#15803d;font-size:1rem;margin-top:0.5em;">¡Copiado al portapapeles!</span>
   </div>
@@ -199,81 +199,53 @@
 
     // Actualizar al cambiar el valor de entrada
     ufInput.addEventListener("input", () => {
-      let value = ufInput.value.replace(",", ".");
-      
-      if (value === "" || isNaN(value)) {
+      try {
+        localStorage.setItem("lastUF", ufInput.value);
+        updateConversion();
+      } catch (error) {
+        console.error('Error during conversion:', error);
         clpOutput.value = "";
-        return;
-      }
-      
-      localStorage.setItem("lastUF", ufInput.value);
-      updateConversion();
-    });
-
-    // Prevenir entrada de caracteres inválidos
-    ufInput.addEventListener("keydown", (e) => {
-      // Permitir teclas de control (backspace, delete, arrows, tab, etc.)
-      if (e.key === "Backspace" || e.key === "Delete" || e.key === "ArrowLeft" || 
-          e.key === "ArrowRight" || e.key === "Tab" || e.key === "Enter") {
-        return;
-      }
-      
-      // Permitir números
-      if (e.key >= "0" && e.key <= "9") {
-        return;
-      }
-      
-      // Permitir coma o punto decimal (solo uno)
-      if ((e.key === "," || e.key === ".") && !ufInput.value.includes(",") && !ufInput.value.includes(".")) {
-        return;
-      }
-      
-      // Bloquear cualquier otra tecla
-      e.preventDefault();
-    });
-
-    // Validar y limpiar el contenido pegado
-    ufInput.addEventListener("paste", (e) => {
-      e.preventDefault();
-      const pastedText = (e.clipboardData || window.clipboardData).getData("text");
-      const cleanedText = pastedText.replace(/[^0-9,.]/g, "");
-      
-      // Solo permitir un separador decimal
-      const commaCount = (cleanedText.match(/,/g) || []).length;
-      const dotCount = (cleanedText.match(/\./g) || []).length;
-      
-      if (commaCount + dotCount <= 1) {
-        ufInput.value = cleanedText;
-        ufInput.dispatchEvent(new Event("input"));
       }
     });
 
     // Función para actualizar la conversión
     function updateConversion() {
-      const ufAmount = parseFloat(ufInput.value) || 0;
-      if (ufAmount === 0) {
-        clpOutput.value = "";
-        return;
-      }
-      
-      // Calcular el valor en pesos chilenos
-      const clpAmount = ufAmount * UF_VALUE;
-      
-      // Mostrar el resultado formateado en el campo CLP (con formato visual, igual que en valorUF)
-      clpOutput.value = clpAmount.toLocaleString("es-CL", {
-        style: "currency",
-        currency: "CLP",
-        maximumFractionDigits: 0
-      });
-      
-      // Formatear el valor de UF en el pie de página
-      document.getElementById("valorUF").textContent = 
-        `1 UF = ${UF_VALUE.toLocaleString("es-CL", {
+      try {
+        let value = ufInput.value.replace(",", ".");
+        const ufAmount = parseFloat(value);
+        
+        if (value === "" || isNaN(ufAmount) || ufAmount <= 0) {
+          clpOutput.value = "";
+          return;
+        }
+        
+        // Calcular el valor en pesos chilenos
+        const clpAmount = ufAmount * UF_VALUE;
+        
+        if (isNaN(clpAmount) || !isFinite(clpAmount)) {
+          clpOutput.value = "";
+          return;
+        }
+        
+        // Mostrar el resultado formateado en el campo CLP (con formato visual, igual que en valorUF)
+        clpOutput.value = clpAmount.toLocaleString("es-CL", {
           style: "currency",
           currency: "CLP",
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        })} CLP`;
+          maximumFractionDigits: 0
+        });
+        
+        // Formatear el valor de UF en el pie de página
+        document.getElementById("valorUF").textContent = 
+          `1 UF = ${UF_VALUE.toLocaleString("es-CL", {
+            style: "currency",
+            currency: "CLP",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          })} CLP`;
+      } catch (error) {
+        console.error('Error in updateConversion:', error);
+        clpOutput.value = "";
+      }
     }
 
     clpOutput.addEventListener("click", () => {
