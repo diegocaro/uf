@@ -15,14 +15,10 @@ jobs:
     
     - name: Install uv and set up Python
       uses: astral-sh/setup-uv@v5
-      with:
-        python-version: '3.12'
-        enable-cache: true
-        cache-dependency-glob: "uv.lock"
         
-    - name: Install dependencies
+    - name: Install the project
       run: |
-        uv sync --all-extras --dev
+        uv sync --locked --all-extras --dev
         
     - name: Run tests
       run: |
