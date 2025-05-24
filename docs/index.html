@@ -16,7 +16,7 @@
     }
 
     .uf-footer {
-      font-size: 0.8rem;
+      font-size: 1rem;
       margin-top: 1rem;
     }
 
@@ -110,7 +110,7 @@
   </style>
 </head>
 <body>
-  <h1>22 de mayo de 2025</h1>
+  <h1></h1>
   
   <div class="conversion-container">
       <div class="conversion-input">
@@ -125,10 +125,10 @@
     <span id="copyFeedback" style="display:none;color:#15803d;font-size:1rem;margin-top:0.5em;">¡Copiado al portapapeles!</span>
   </div>
   
-  <div class="uf-footer" id="valorUF">1 UF = $37.420,55 CLP</div>
+  <div class="uf-footer" id="valorUF"></div>
 
   <footer>
-    Fuente: <a href="" id="sourceLink" target="_blank">Banco Central</a> · Actualizado el <a href="data/uf.json" download="uf.json" title="Descargar datos en formato JSON" id="dataExtractedText">22 de mayo de 2025</a><br>
+    Fuente: <a href="" id="sourceLink" target="_blank">Banco Central</a> · Actualizado el <a href="data/uf.json" download="uf.json" title="Descargar datos en formato JSON" id="dataExtractedText"></a><br>
     Repositorio: <a href="https://github.com/diegocaro/uf">GitHub 🔗</a>
   </footer>
 
@@ -137,6 +137,10 @@
     const defaultInput = "22,5";
     const ufInput = document.getElementById("ufInput");
     const clpOutput = document.getElementById("clpOutput");
+    
+    // Cargar valor guardado o usar valor predeterminado
+    const savedUF = localStorage.getItem("lastUF") || defaultInput;
+    ufInput.value = savedUF;
     
     // Fetch UF value from JSON file
     async function fetchUFValue() {
@@ -175,10 +179,6 @@
           timeZone: 'America/Santiago'
         });
         document.querySelector('h1').textContent = formatter.format(new Date(ufData.fecha + 'T12:00:00'));
-
-        
-        // Update the conversion with the new UF value
-        updateConversion();
         
         // Update source date in footer
         const updateDateObj = new Date(data.updated_at);
@@ -188,6 +188,9 @@
           year: 'numeric'
         });
         document.getElementById('dataExtractedText').textContent = `${footerDateStr}`;
+        
+        // Update the conversion with the new UF value
+        updateConversion();
       } catch (error) {
         console.error('Error fetching UF data:', error);
       }
@@ -195,15 +198,6 @@
     
     // Load UF data when page loads
     fetchUFValue();
-
-    // Cargar valor guardado o usar valor predeterminado
-    const savedUF = localStorage.getItem("lastUF") || defaultInput;
-    ufInput.value = savedUF;
-    
-    // Wait for UF value to be loaded before updating
-    if (UF_VALUE > 0) {
-      updateConversion();
-    }
 
     // Actualizar al cambiar el valor de entrada
     ufInput.addEventListener("input", () => {
