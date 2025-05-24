@@ -1,0 +1,3056 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html class="ltr" dir="ltr" lang="es-CL">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta content="initial-scale=1.0, width=device-width" name="viewport" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Base de Datos Estad&#237;sticos (BDE) </title>
+
+    <link rel="shortcut icon" href="/Siete/favicon.ico" />
+
+    <link rel="stylesheet" href="/Siete/Includes/jquery-ui-1.13.2/jquery-ui.min.css">
+    <link rel="stylesheet" href="/Siete/Includes/css/custom.min.css">
+    <link rel="stylesheet" href="/Siete/Includes/bootstrap-table-1.16/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/Siete/Includes/bootstrap-table-1.16/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css">
+    <link rel="stylesheet" href="/Siete/Includes/datepicker/bootstrap-datepicker.min.css">
+
+    <link href="/Siete/Includes/css/base.css" rel="stylesheet"/>
+<link href="/Siete/Includes/css/app.css" rel="stylesheet"/>
+<link href="/Siete/Includes/datatables/datatables.min.css" rel="stylesheet"/>
+
+
+    <link rel="stylesheet" href="/Siete/Includes/css/fontawesome-5.9.0/css/all.min.css">
+
+    <link rel="stylesheet" href="/Siete/Includes/css/bcch/cssv2.css">
+    <link rel="stylesheet" href="/Siete/Includes/js/slick/slick.css">
+    <link rel="stylesheet" href="/Siete/Includes/js/slick/slick-theme.css">
+    <link rel="stylesheet" href="/Siete/Includes/css/ux.css">
+
+
+
+
+    <script>
+        var ExceptionPages = {
+            Default: '/Exception',
+            ExceptionPage400: '/ES/Exception/Error400',
+            ExceptionPage403: '/ES/Exception/Error403',
+            ExceptionPage404: '/ES/Exception/Error404',
+            ExceptionPage500: '/ES/Exception/Error500'
+        }
+
+        var Labels = {
+            _aceptar: "Aceptar",
+            _cancelar: "Cancelar",
+        }
+
+        var Config = {
+            SeparadorDecimales: ",",
+            SeparadorMiles: ".",
+            HomeSistemas: "https://si3.bcentral.cl/siete/",
+            IntMaxValue: parseInt("2147483647"),
+            IntMinValue: parseInt("-2147483648"),
+            lngDate: "es",
+            formatDate: "dd-mm-yyyy"
+
+        }
+    </script>
+
+    <style>
+
+        .x-icon-loading
+        {
+          width: 32px; height: 32px;
+          background-image: url('https://si3.bcentral.cl/siete/Includes/css/images/ajax-loader_2.gif');
+          display: inline-block;
+        }
+
+    </style>
+    <!-- Google Tag Manager -->
+    <script>
+            (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+            new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-K4X5MWB');
+    </script>
+    <!-- End Google Tag Manager -->
+
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4X5MWB"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+
+
+    <div class="topBar">
+        <ul class="ar">
+            
+            <li><a href="https://si3.bcentral.cl/Siete/es/Siete/API?respuesta=" target="_blank">API BDE</a></li>
+            <li class="separa">|</li>
+            <li><a href="https://www.bcentral.cl" name="homeBCCh">Web BCCh</a></li>
+            <li class="separa">|</li>
+            <li><a href="javascript:void(0)" onclick="ChangeLang()">English</a></li>
+            <li class="separa">|</li>
+            <li><a href="https://contactocentral.bcentral.cl/" target="_blank">Cont&#225;ctenos</a></li>
+            <li class="separa">|</li>
+            <li><a target="_blank" href="https://si3.bcentral.cl/estadisticas/Principal1/enlaces/aplicaciones/index.html">Glosario</a></li>
+            <li class="separa">|</li>
+            <li><a target="_blank" href="https://si3.bcentral.cl/estadisticas/Principal1/enlaces/aplicaciones/index_faq.html">Preguntas Frecuentes</a></li>
+            <li class="separa">|</li>
+            <li><a target="_blank" href="https://si3.bcentral.cl/estadisticas/Principal1/Web_Services/index_BDE_TC.htm">Condiciones uso BDE</a></li>
+        </ul>
+    </div>
+
+    <div class="header-main">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="justify-content: flex-end;">
+
+
+            <button class="navbar-toggler first-button" type="button" data-toggle="collapse" data-target="#navbar01"
+                    aria-controls="navbar01" aria-expanded="false" aria-label="Toggle navigation">
+                <div class="animated-icon1"><span></span><span></span><span></span></div>
+            </button>
+
+            <div class="collapse navbar-collapse " id="navbar01">
+                <a class="navbar-brand" href="https://www.bcentral.cl"><img src="/Siete/Includes/css/images/layout_set_logo.png" /></a>
+                <div class="mainTitle">
+                    <h4>Base de Datos Estad&#237;sticos (BDE)</h4>
+                </div>
+
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="https://si3.bcentral.cl/siete/">Inicio</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://si3.bcentral.cl/Indicadoressiete/secure/Indicadoresdiarios.aspx">Indicadores Diarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://si3.bcentral.cl/SetGraficos">Set de Gr&#225;ficos</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                </ul>
+
+                <ul class="navbar-nav mt-2 mt-lg-0">
+                    <li class="nav-item vam ar" style="margin-left: 10px">
+                        <div class="row ar">
+                            <form class="form-inline" method="post" action="/Siete/ES/Siete/Search" onsubmit="return validateSearch();" id="frmBusca" autocomplete="off">
+                                <input name="__RequestVerificationToken" type="hidden" value="qH8V_u0gAx2yfhez_bRGd5pJ7s7_dSBg5d-XPG8NnnC4myTiyGWKcpVZqPebr7CIpk6SfKGy3H2gwms7D8fGBWRsDJs1" />
+
+                                
+                                
+                                        <div class="nav-item" style="">
+                                            <div class=" nav-link">
+                                                Nuevo buscador de datos estad&#237;sticos
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <input type="text" name="criterio" id="criterio" class="form-control" placeholder="Escriba aqu&#237;" onkeypress="return buscar_cross_browser(event);"
+                                                       aria-label="Escriba aqu&#237;">
+                                                <div class="input-group-append">
+                                                    <button id="buttonBuscar" class="btn btn-danger" style="background-color: #9b814d;border-color: #9b814d;" type="button" onclick="link_ir();">
+                                                        <i class="iconBase iconBuscar"></i>
+                                                    </button>
+                                                    &nbsp;
+                                                    &nbsp;
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                        </div>
+</form>
+
+                                <div class="nav-item" style="">
+                                    <div class=" nav-link">&nbsp;</div>
+                                    <div class="row ar">
+                                        <div class="col-sm-6 ac bt"><button id="btnIngresar" style="width: 125px" class="btn btn-corp btn-green" type="button">Iniciar sesi&#243;n</button></div>
+                                        <div class="col-sm-6 ac bt"><button id="btnRegistro" style="width: 125px; margin-left: 5px" class="btn btn-corp btn-reset" type="button">Registrarse</button></div>
+
+
+                                    </div>
+                                </div>
+                        </div>
+
+                    </li>
+                </ul>
+
+
+
+                <input name="__RequestVerificationToken" type="hidden" value="ta_zexgI3VQfu7rdfPQEC1eScQZhXIiAuA3MAuP0erJmBFv0LvO0M79-1Wj703pveuHgcpktzc0irdBRWA2zdcxqqmM1" />
+
+
+            </div>
+        </nav>
+    </div>
+
+    <script src="/Siete/Includes/js/jquery-3.6.0.min.js"></script>
+<script src="/Siete/Includes/jquery-ui-1.13.2/jquery-ui.min.js"></script>
+<script src="/Siete/Includes/js/popper.min.js"></script>
+<script src="/Siete/Includes/bootstrap-4.3.1/js/bootstrap.min.js"></script>
+<script src="/Siete/Includes/bootstrap-table-1.16/bootstrap-table.min.js"></script>
+<script src="/Siete/Includes/bootstrap-table-1.16/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js"></script>
+<script src="/Siete/Includes/js/plugins.js"></script>
+<script src="/Siete/Includes/js/vendor/underscore-min.js"></script>
+<script src="/Siete/Includes/js/vendor/store.json2.min.js"></script>
+<script src="/Siete/Includes/datatables/datatables.js"></script>
+
+    <script src="/Siete/Includes/js/utils.js"></script>
+<script src="/Siete/Includes/js/app.js"></script>
+<script src="/Siete/Includes/js/site.js"></script>
+
+
+    <script src="/Siete/Includes/js/slick/slick.min.js"></script>
+
+    
+
+
+
+<script type="text/javascript">
+
+    var $table;
+    const KeySave = "UF_IVP_DIARIO";
+    var valuesGraph = [];
+
+    ; (function ($) {
+        $(function () {
+
+            CallMenuTree();
+            SetActiveLink();
+
+            $("#frmActionsCuadro select").on("change", function () {
+                SetActionCuadro();
+            });
+
+            //SetResize();
+
+        });
+    })(jQuery);
+
+    var rtime;
+    var timeout = false;
+    var delta = 200;
+    var gridFixedSize = 550;
+    var gridSize = 900;
+
+    function SetResize() {
+
+        var initial = $(window).width();
+        var fsInitial = $("#fsTable").width();
+        console.log(fsInitial);
+        var IsActiveSidebar = $("#sidebar").css('marginLeft') == "0px";
+
+        if (IsActiveSidebar) {
+
+            //if (gridSize > initial) {
+            //    $("#divCont").css({ "max-width": "75%", "min-width": "75%" });
+            //} else {
+            //    $("#divCont").css({ "max-width": "81%", "min-width": "80%" });
+            //}
+
+            $("#divCont").css({ "max-width": "78%", "min-width": "78%" });
+
+        } else {
+            $("#divCont").css({ "max-width": "100%", "min-width": "100%" });
+        }
+
+        if (fsInitial > gridFixedSize) {
+            SetTable(true);
+        } else {
+            SetTable(false);
+        }
+
+        $(window).resize(function () {
+            rtime = new Date();
+            if (timeout === false) {
+                timeout = true;
+                setTimeout(ResizeEnd, delta);
+            }
+        });
+    }
+
+    function ResizeEnd() {
+        if (new Date() - rtime < delta) {
+            setTimeout(ResizeEnd, delta);
+        } else {
+            timeout = false;
+            var size = $(window).width();
+            var fsInitial = $("#fsTable").width();
+            console.log(fsInitial);
+
+            var IsActiveSidebar = $("#sidebar").css('marginLeft') == "0px";
+
+            if (IsActiveSidebar) {
+
+                $("#divCont").css({ "max-width": "78%", "min-width": "78%" });
+
+            } else {
+                $("#divCont").css({ "max-width": "100%", "min-width": "100%" });
+            }
+
+            //console.log(fsInitial, gridFixedSize);
+
+            if (fsInitial > gridFixedSize) {
+                SetTable(true);
+            } else {
+                SetTable(false);
+            }
+        }
+    }
+
+    function SetTable(IsFixed) {
+
+        $table = $('#grilla');
+
+        try {
+            $table.bootstrapTable('destroy');
+        } catch (e) {
+
+        }
+
+        //console.log(IsFixed);
+
+        $table.bootstrapTable({
+            onPageChange: function () {
+                EnableClickcheck();
+                checkFromStore("UF_IVP_DIARIO");
+            },
+            fixedColumns: IsFixed,
+            fixedNumber: 2,
+            fixedRightNumber: 0
+        });
+
+        if (IsFixed) {
+            ScrollRight();
+        }
+
+        if ($('.fixed-table-body').length == 1) {
+            $("span.sname").each(function () {
+                $(this).addClass("snameFix");
+            })
+        }
+
+        setTimeout(function () {
+            EnableClickcheck();
+            checkFromStore("UF_IVP_DIARIO");
+        }, 90);
+    }
+
+    function ScrollRight() {
+        try {
+            var last = $(".col:last").offset().left;
+            setTimeout(function () { $(".fixed-table-body:eq(0)").animate({ scrollLeft: last + 100000 }, 0); }, 1000);
+        }
+        catch (err) {
+
+        }
+    }
+
+    function LoadCuadroBT(IsFixed) {
+
+        $table = $('#grilla');
+
+        if (!IsFixed) {
+            $table.bootstrapTable('destroy');
+        }
+
+        $table.bootstrapTable({
+            fixedColumns: IsFixed,
+            fixedNumber: 2,
+            //clickToSelect: true,
+            fixedRightNumber: 0
+        });
+    }
+
+    function GetInfoCuadro() {
+
+        var opt = {
+            title: "Metadatos y notas",
+            url: "/Siete/ES/Siete/GetInfoCuadro",
+            params: {
+                __RequestVerificationToken: getVToken(),
+                codCuadro: "UF_IVP_DIARIO"
+            },
+            //options.alert = options.alert || "alert-primary";
+            //alert: "alert-default",
+            size: "modal-lg",
+            callback: function () {
+                //goGrid();
+                //$("#CategoriaManualID").change();
+            }
+        }
+
+        GetModalContent(opt);
+    }
+
+    function SetActiveLink() {
+
+        var IsValidItemMenu = "True".bool();
+
+        if (IsValidItemMenu) {
+            $("#MN_CAP_PRECIOSUF_IVP_DIARIO").addClass("mActive");
+        }
+        else {
+            $(".linkMenuRoot").each(function () {
+
+                var data = $(this).data("cuadroid");
+
+                if ("UF_IVP_DIARIO" == data) {
+                    $(this).addClass("mActive");
+                }
+            })
+
+            $(".linkMenu").each(function () {
+
+                var data = $(this).data("cuadroid");
+
+                if ("UF_IVP_DIARIO" == data) {
+                    $(this).addClass("mActive");
+                }
+            });
+        }
+
+
+
+        if ($(".mActive").parents("ul").length > 1) {
+
+            $(".mActive").parents("ul").show();
+
+            var $parentMenu = $(".mActive").parents(".parentMenu");
+
+            $parentMenu.find("ul:visible").each(function () {
+
+                $(this).parent(".itemMenu").find(".icon-mt-plus:eq(0)").addClass("active");
+            })
+        }
+    }
+
+    function SetActionCuadro() {
+
+        var cbFrecuencia = $("#cbFrecuencia").val() || "";
+        var cbFechaInicio = $("#cbFechaInicio").val() || "";
+        var cbFechaDiaria = $("#cbFechaDiaria").val() || "";
+        var cbFechaTermino = $("#cbFechaTermino").val() || "";
+        var cbCalculo = $("#cbCalculo").val() || "";
+
+
+        var location = window.location;
+        var params = $("#frmActionsCuadro").serialize();
+
+        if (parseInt(cbFechaInicio) > parseInt(cbFechaTermino)) {
+
+            showBlockUIError("Ingrese una fecha de inicio menor a la fecha de término.")
+            $("#frmActionsCuadro").reset();
+            return false;
+        }
+
+        var newUrl = window.location.href.split('?')[0] + "?" + params;
+        console.log(newUrl);
+
+        window.location.href = newUrl;
+
+    }
+
+    function IndizarCuadro() {
+
+        var opt = {
+            title: "Fecha Base 100",
+            url: "/Siete/ES/Siete/IndizarCuadro",
+            params: {
+                __RequestVerificationToken: getVToken(),
+                codCuadro: "UF_IVP_DIARIO",
+                calendarFormat: "dd-MM-yyyy",
+                fechaBase: "01-01-2025",
+                frecuencia: "DAILY",
+                dateMin: "01-01-2025",
+                dateMax: "09-06-2025",
+                fechaValidaInicio: "01-01-1977",
+                fechaValidaFin: "09-06-2025"
+            },
+            size: "modal-sm",
+            callback: function () {
+
+            }
+        }
+
+        GetModalContent(opt);
+    }
+
+    function GetFavoritos() {
+        var opt = {
+            title: "Compartir Link",
+            url: "/Siete/ES/Siete/GetFavoritos",
+            params: {
+                __RequestVerificationToken: getVToken(),
+                codCuadro: "UF_IVP_DIARIO",
+                URL: window.location.href
+            },
+            size: "modal-lg",
+            callback: function () {
+
+            }
+        }
+
+        GetModalContent(opt);
+    }
+
+    function EnableClickcheck() {
+
+        $(".chkGrid").click(function () {
+            $.saveItem($(this));
+        })
+    }
+
+    function checkFromStore(CodigoCuadro) {
+
+        var items = [];
+
+        try {
+            items = store.get(CodigoCuadro).items || [];
+        }
+        catch (err) {
+            items = [];
+        }
+
+        $.each(items, function (x, y) {
+            $('#tbodyGrid *[data-serie="' + y.serie_id + '"]').prop("checked", true);
+        });
+    }
+
+    function AddBasket() {
+
+        var cuadro = GetStore("UF_IVP_DIARIO", { cuadro_id: 0, items: [] });
+
+        var params = {
+            __RequestVerificationToken: getVToken(),
+            idCuadro: "UF_IVP_DIARIO",
+            Frecuencia: $("#cbFrecuencia").val() || "",
+            FrecuenciaText: $("#cbFrecuencia option:selected").text(),
+            AnioDesde: $("#cbFechaInicio").val() || "",
+            AnioHasta: $("#cbFechaTermino").val() || "",
+            AnioDiario: $("#cbFechaDiaria").val() || "0",
+            Calculo: $("#cbCalculo").val() || "",
+            CalculoText: $("#cbCalculo option:selected").text(),
+            Series: JSON.stringify(cuadro.items),
+        }
+
+        var before = function () { }
+
+        var callback = function () {
+
+            if (xJSONResult.result == parseInt("-1")) {
+                blockPageUI();
+                RedirectExceptionPage(500);
+                return false;
+            }
+
+            if (xJSONResult.result != parseInt("1")) {
+                showBlockUIError(xJSONResult.message);
+                return false;
+            }
+            else {
+                showBlockUI(xJSONResult.message);
+                return false;
+            }
+        }
+
+        xJsonObj("/Siete/ES/Siete/AddBasket", params, before, callback);
+
+    }
+
+    function ViewBasket() {
+
+        var params = {
+            __RequestVerificationToken: getVToken(),
+            action: "ExisteCanasta"
+        };
+
+        var callback = function () {
+
+            if (xJSONResult.active) {
+                LinkRedirect("/Siete/ES/Siete/Canasta");
+            }
+            else {
+                showBlockUI(xJSONResult.message);
+                return false;
+            }
+        }
+
+        xJsonObj("/Siete/ES/Siete/ActionSiete", params, function () { }, callback);
+    }
+
+    function RemoveBasket() {
+
+        var params = {
+            __RequestVerificationToken: getVToken(),
+            action: "RemoveBasket"
+        };
+
+        var callback = function () {
+
+            if (xJSONResult.active) {
+                $("#msgDeleteBasket").html(xJSONResult.message);
+                $('#modalDeleteBasket').modal('toggle');
+            }
+            else {
+                showBlockUI(xJSONResult.message);
+                return false;
+            }
+        }
+
+        xJsonObj("/Siete/ES/Siete/ActionSiete", params, function () { }, callback);
+    }
+
+    function GraficarCuadro() {
+
+        var cuadro = GetStore("UF_IVP_DIARIO", { cuadro_id: 0, items: [] });
+
+        if (cuadro.items.length == 0) {
+            showBlockUIError("No hay series seleccionadas");
+            return false;
+        }
+
+        if (cuadro.items.length > 15) {
+            showBlockUIError("El gráfico acepta un máximo de 15 series.");
+            return false;
+        }
+
+        var opt = {
+            title: "Gráfico",
+            url: "/Siete/ES/Siete/Graficar",
+            params: {
+                Series: JSON.stringify(cuadro.items),
+                idCuadro: "UF_IVP_DIARIO",
+                IsCanasta: false,
+                IsCuadro: true,
+                decimales: "2",
+                frecuencia: $("#cbFrecuencia").val(),
+                fechaMinima: "1977",
+                fechaMaxima: "2025",
+                fechaInicio: $("#cbFechaInicio").val(),
+                fechaFin: $("#cbFechaTermino").val(),
+                fechaDiaria: $("#cbFechaDiaria").val(),
+                calculo: $("#cbCalculo").val(),
+                fechaBase: "01-01-2025",
+                __RequestVerificationToken: getVToken()
+            },
+            size: "modal-xl",
+            callback: function () {
+
+            }
+        }
+
+        valuesGraph = {
+            idCuadro: "UF_IVP_DIARIO",
+            series: cuadro.items,
+            decimales: "2",
+            frecuencia: $("#cbFrecuencia").val(),
+            fechaMinima: "1977",
+            fechaMaxima: "2025",
+            fechaInicio: $("#cbFechaInicio").val(),
+            fechaFin: $("#cbFechaTermino").val(),
+            fechaDiaria: $("#cbFechaDiaria").val(),
+            calculo: $("#cbCalculo").val(),
+            fechaBase: "01-01-2025"
+        };
+
+        GetModalContent(opt);
+
+    }
+
+    function ExportarExcelCuadro() {
+
+        $('#modalExport').modal('toggle');
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+<div class="wrapper d-flex align-items-stretch" style="overflow-x: hidden;">
+
+    <nav id="sidebar">
+        <div class="custom-menu">
+            <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                <i class="iconBase iconSidebar"></i>
+                <span class="sr-only">Toggle Menu</span>
+            </button>
+        </div>
+        <div class="p-4">
+            <h1><a href="#" class="logo">Contenidos </a></h1>
+
+            <ul id="tree">
+
+
+                        <li class="itemMenu parentMenu">
+                            <i class="icon-mt icon-mt-plus"></i>
+                            <a href="#">Unidad de Fomento (UF) - &#205;ndice de Valor Promedio (IVP) - Unidad Tributaria Mensual (UTM)</a>
+                            <ul>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOSUF_IVP_DIARIO" data-cuadroid="UF_IVP_DIARIO"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/UF_IVP_DIARIO/UF_IVP_DIARIO&#39;)">UF-IVP diaria</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOSUF_IVP_UTM" data-cuadroid="UF_IVP_UTM"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/UF_IVP_UTM/UF_IVP_UTM&#39;)">UF-IVP-UTM  mensual</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOSUF_IVP_UTM_findemes" data-cuadroid="UF_IVP_UTM_F"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/UF_IVP_UTM_F/UF_IVP_UTM_findemes&#39;)">UF-IVP fin de mes</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                            </ul>
+                        </li>
+                        <li class="itemMenu parentMenu">
+                            <i class="icon-mt icon-mt-plus"></i>
+                            <a href="#">IPC General  y medidas subyacentes (Cifras oficiales del INE), base 2023=100</a>
+                            <ul>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638415285606842418" data-cuadroid="IPC_VAREMP_2023"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_VAREMP_2023/638415285606842418&#39;)">Variaci&#243;n mensual y anual </a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638415285164039007" data-cuadroid="IPC_EMP_2023"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_EMP_2023/638415285164039007&#39;)">&#205;ndice empalmado - 2023</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638415283647330892" data-cuadroid="IPC_BS_23_VAR_M"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_BS_23_VAR_M/638415283647330892&#39;)">Base 2023 = 100, variaci&#243;n mensual, series referenciales</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638415284513685311" data-cuadroid="IPC_G_2023"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_G_2023/638415284513685311&#39;)">Base 2023 = 100, &#237;ndice, series referenciales</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638614947286134835" data-cuadroid="IPC_ANA_INE_2023"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_ANA_INE_2023/638614947286134835&#39;)">Base 2023 = 100, &#237;ndice, anal&#237;ticos empalmados</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638615571054767340" data-cuadroid="IPC_VARM_ANA_INE_2023"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_VARM_ANA_INE_2023/638615571054767340&#39;)">Base 2023 = 100, variaci&#243;n mensual, anal&#237;ticos empalmados</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                            </ul>
+                        </li>
+                        <li class="itemMenu parentMenu">
+                            <i class="icon-mt icon-mt-plus"></i>
+                            <a href="#">IPC, IPC sin vol&#225;tiles e IPC vol&#225;tiles (cifras para an&#225;lisis econ&#243;mico, empalmes del Banco Central) base 2023=100</a>
+                            <ul>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638447991293317726" data-cuadroid="PEM_VAR_IPC_2023"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/PEM_VAR_IPC_2023/638447991293317726&#39;)">Variaci&#243;n mensual</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638447991540869284" data-cuadroid="PEM_VAR12_IPC_2023"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/PEM_VAR12_IPC_2023/638447991540869284&#39;)">Variaci&#243;n anual</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638447991790421422" data-cuadroid="PEM_IND_IPC_2023"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/PEM_IND_IPC_2023/638447991790421422&#39;)">&#205;ndices</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                            </ul>
+                        </li>
+                        <li class="itemMenu parentMenu">
+                            <i class="icon-mt icon-mt-plus"></i>
+                            <a href="#">IPC - Aperturas</a>
+                            <ul>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-plus'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638415286203445263" data-cuadroid=""
+                                           onclick="">&#205;ndices 2023</a>
+
+                                        <ul>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638415289755016902" data-cuadroid="IPC_DIV_2023"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_DIV_2023/638415289755016902&#39;)">Divisiones</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-plus'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638415286559747887" data-cuadroid=""
+                                           onclick="">Ponderadores 2023</a>
+
+                                        <ul>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638415290862972773" data-cuadroid="IPC_PON_DIV_2023"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_PON_DIV_2023/638415290862972773&#39;)">Divisiones</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                        </ul>
+                                    </li>
+                            </ul>
+                        </li>
+                        <li class="itemMenu parentMenu">
+                            <i class="icon-mt icon-mt-plus"></i>
+                            <a href="#">&#205;ndice de Precios al Productor (IPP) general y por categor&#237;a</a>
+                            <ul>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPP_IND2009" data-cuadroid="IPP_IND2009"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPP_IND2009/IPP_IND2009&#39;)">Base 2014=100</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638343693518938076" data-cuadroid="IPP_IND2019"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPP_IND2019/638343693518938076&#39;)">Base 2019 =100</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                            </ul>
+                        </li>
+                        <li class="itemMenu parentMenu">
+                            <i class="icon-mt icon-mt-plus"></i>
+                            <a href="#">Informaci&#243;n hist&#243;rica</a>
+                            <ul>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS637775996212899984" data-cuadroid="IPC_VAR_MEN1_HIST_NEW"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_VAR_MEN1_HIST_NEW/637775996212899984&#39;)">Variaci&#243;n mensual</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-grid'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS637776000242408435" data-cuadroid="IPC_VAR_ANUAL_HIST_NEW"
+                                           onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_VAR_ANUAL_HIST_NEW/637776000242408435&#39;)">Variaci&#243;n anual</a>
+
+                                        <ul>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-plus'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421475403000472" data-cuadroid=""
+                                           onclick="">IPC y anal&#237;ticos (empalme BCCh), IPC sin vol&#225;tiles e IPC vol&#225;tiles - base 2018=100</a>
+
+                                        <ul>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421475664251822" data-cuadroid="PEM_VAR_IPC_2018_HIST"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/PEM_VAR_IPC_2018_HIST/638421475664251822&#39;)">Variaci&#243;n mensual</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421475815002942" data-cuadroid="PEM_VAR12_IPC_2018_HIST"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/PEM_VAR12_IPC_2018_HIST/638421475815002942&#39;)">Variaci&#243;n anual</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421475942402683" data-cuadroid="PEM_IND_IPC_2018_HIST"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/PEM_IND_IPC_2018_HIST/638421475942402683&#39;)">&#205;ndices</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-plus'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_HIST_MEDSUBY" data-cuadroid=""
+                                           onclick="">IPC General  y medidas subyacentes, INE</a>
+
+                                        <ul>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421470779931340" data-cuadroid="IPC_BS_18_VAR_M"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_BS_18_VAR_M/638421470779931340&#39;)">Base 2018 = 100, variaci&#243;n mensual</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421471063032905" data-cuadroid="IPC_BS_18_VAR_A"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_BS_18_VAR_A/638421471063032905&#39;)">Base 2018 = 100, variaci&#243;n anual</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421471284983418" data-cuadroid="IPC_G_2018"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_G_2018/638421471284983418&#39;)">Base 2018 = 100, &#237;ndice</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421471672585709" data-cuadroid="IPC_EMP_2018"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_EMP_2018/638421471672585709&#39;)">&#205;ndice empalmado</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421471945937053" data-cuadroid="IPC_VAREMP_2018"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_VAREMP_2018/638421471945937053&#39;)">Variaci&#243;n mensual y anual empalmada</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_MEDSUBY_2013" data-cuadroid="IPC_MEDSUBY_2013"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_MEDSUBY_2013/IPC_MEDSUBY_2013&#39;)">Base Prom. 2013=100</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_A00_MEDSUBY" data-cuadroid="IPC_A00_MEDSUBY"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_A00_MEDSUBY/IPC_A00_MEDSUBY&#39;)">Base Prom. 2009=100</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_100_MEDSUBY" data-cuadroid="IPC_100_MEDSUBY"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_100_MEDSUBY/IPC_100_MEDSUBY&#39;)">Base Dic. 2008=100</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_1998_100_MEDSUBY" data-cuadroid="IPC_1998_100_MEDSUBY"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_1998_100_MEDSUBY/IPC_1998_100_MEDSUBY&#39;)">Base Dic. 1998=100</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-plus'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_HIST_APER" data-cuadroid=""
+                                           onclick="">IPC - Aperturas</a>
+
+                                        <ul>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-plus'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421472469288595" data-cuadroid=""
+                                                       onclick="">&#205;ndices 2018</a>
+                                                    <ul>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421474114445903" data-cuadroid="IPC_DIV_2018"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_DIV_2018/638421474114445903&#39;)">Divisiones</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-plus'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421473965594511" data-cuadroid=""
+                                                       onclick="">Ponderadores 2018</a>
+                                                    <ul>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638421474800298178" data-cuadroid="IPC_PON_DIV_2018"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_PON_DIV_2018/638421474800298178&#39;)">Divisiones</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-plus'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIND-2013" data-cuadroid=""
+                                                       onclick="">&#205;ndices 2013</a>
+                                                    <ul>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_2A1_IND2013_DIV" data-cuadroid="IPC_2A1_IND2013_DIV"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_2A1_IND2013_DIV/IPC_2A1_IND2013_DIV&#39;)">Divisiones</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-plus'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSPONDER-2013" data-cuadroid=""
+                                                       onclick="">Ponderadores 2013</a>
+                                                    <ul>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_2B1_POND2013_DIV" data-cuadroid="IPC_2B1_POND2013_DIV"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_2B1_POND2013_DIV/IPC_2B1_POND2013_DIV&#39;)">Divisiones</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-plus'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIND-2009" data-cuadroid=""
+                                                       onclick="">&#205;ndices 2009</a>
+                                                    <ul>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_2A1_IND2009_DIV" data-cuadroid="IPC_2A1_IND2009_DIV"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_2A1_IND2009_DIV/IPC_2A1_IND2009_DIV&#39;)">Divisiones</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-plus'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSPONDER-2009" data-cuadroid=""
+                                                       onclick="">Ponderadores 2009</a>
+                                                    <ul>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_2B1_POND2009_DIV" data-cuadroid="IPC_2B1_POND2009_DIV"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_2B1_POND2009_DIV/IPC_2B1_POND2009_DIV&#39;)">Divisiones</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-plus'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIND-2008" data-cuadroid=""
+                                                       onclick="">&#205;ndices 2008</a>
+                                                    <ul>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_211_IND2008_DIV" data-cuadroid="IPC_211_IND2008_DIV"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_211_IND2008_DIV/IPC_211_IND2008_DIV&#39;)">Divisiones</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-plus'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSPONDER-2008" data-cuadroid=""
+                                                       onclick="">Ponderadores 2008</a>
+                                                    <ul>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_221_POND2008_DIV" data-cuadroid="IPC_221_POND2008_DIV"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPC_221_POND2008_DIV/IPC_221_POND2008_DIV&#39;)">Divisiones</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                    </ul>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-plus'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPM_HIST_GENERAL" data-cuadroid=""
+                                           onclick="">&#205;ndice de Precios al por Mayor (IPM) por origen y por sectores</a>
+
+                                        <ul>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPM_GENERAL_BASE-2007" data-cuadroid="IPM_GENERAL_BASE-2007"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPM_GENERAL_BASE-2007/IPM_GENERAL_BASE-2007&#39;)">Base Nov. 2007=100</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPM_GENERAL_BASE-1992" data-cuadroid="IPM_GENERAL_BASE-1992"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPM_GENERAL_BASE-1992/IPM_GENERAL_BASE-1992&#39;)">Base Junio 1992=100</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-plus'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPM_300" data-cuadroid=""
+                                           onclick="">IPM Apertura</a>
+
+                                        <ul>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-plus'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPM_310_1992" data-cuadroid=""
+                                                       onclick="">IPM 1992</a>
+                                                    <ul>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPM_311_1992" data-cuadroid="IPM_311_NACIONAL_PRE199206"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPM_311_NACIONAL_PRE199206/IPM_311_1992&#39;)">Origen nacional</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPM_312_1992" data-cuadroid="IPM_312_IMPORTADO_PRE199206"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPM_312_IMPORTADO_PRE199206/IPM_312_1992&#39;)">Origen importado</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-plus'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPM_410_2007" data-cuadroid=""
+                                                       onclick="">IPM 2007</a>
+                                                    <ul>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPM_411_2007" data-cuadroid="IPM_411_NACIONAL_PRE2007"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPM_411_NACIONAL_PRE2007/IPM_411_2007&#39;)">Origen nacional</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                            <li class="itemMenu">
+                                                                <i class='icon-mt icon-mt-grid'></i>
+                                                                <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPM_412_2007" data-cuadroid="IPM_412_IMPORTADO_PRE2007"
+                                                                   onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPM_412_IMPORTADO_PRE2007/IPM_412_2007&#39;)">Origen importado</a>
+                                                                <ul>
+                                                                </ul>
+                                                            </li>
+                                                    </ul>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="itemMenu">
+
+                                        <i class='icon-mt icon-mt-plus'></i>
+                                        <a href="#" class="linkMenu" id="MN_CAP_PRECIOS638415997656294608" data-cuadroid=""
+                                           onclick="">IPP</a>
+
+                                        <ul>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPC_IPP" data-cuadroid="IPP_410_IND200304"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPP_410_IND200304/IPC_IPP&#39;)">IPP Base abril 2003=100</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                                <li class="itemMenu">
+                                                    <i class='icon-mt icon-mt-grid'></i>
+                                                    <a href="#" class="linkMenu" id="MN_CAP_PRECIOSIPP_410_IND2009" data-cuadroid="IPP_410_IND2009"
+                                                       onclick="LinkRedirect(&#39;/Siete/ES/Siete/Cuadro/CAP_PRECIOS/MN_CAP_PRECIOS/IPP_410_IND2009/IPP_410_IND2009&#39;)">IPP Base promedio 2009=100</a>
+                                                    <ul>
+                                                    </ul>
+                                                </li>
+                                        </ul>
+                                    </li>
+                            </ul>
+                        </li>
+            </ul>
+
+
+        </div>
+    </nav>
+
+
+    <div class="p-4 p-md-5 pt-5" id="divCont" style="max-width: 81%; min-width:80%">
+        
+        <h2 class="mb-4">Precios</h2>
+
+        <form class="" id="frmActionsCuadro">
+            
+
+
+
+            <div class="form-row">
+
+                    <div class="form-group col-md-2">
+                        <label for="cbFechaDiaria">Fecha</label>
+                        <select id="cbFechaDiaria" name="cbFechaDiaria" class="form-control control-corp select-tabs-container">
+                                <option value="1977" >1977</option>
+                                <option value="1978" >1978</option>
+                                <option value="1979" >1979</option>
+                                <option value="1980" >1980</option>
+                                <option value="1981" >1981</option>
+                                <option value="1982" >1982</option>
+                                <option value="1983" >1983</option>
+                                <option value="1984" >1984</option>
+                                <option value="1985" >1985</option>
+                                <option value="1986" >1986</option>
+                                <option value="1987" >1987</option>
+                                <option value="1988" >1988</option>
+                                <option value="1989" >1989</option>
+                                <option value="1990" >1990</option>
+                                <option value="1991" >1991</option>
+                                <option value="1992" >1992</option>
+                                <option value="1993" >1993</option>
+                                <option value="1994" >1994</option>
+                                <option value="1995" >1995</option>
+                                <option value="1996" >1996</option>
+                                <option value="1997" >1997</option>
+                                <option value="1998" >1998</option>
+                                <option value="1999" >1999</option>
+                                <option value="2000" >2000</option>
+                                <option value="2001" >2001</option>
+                                <option value="2002" >2002</option>
+                                <option value="2003" >2003</option>
+                                <option value="2004" >2004</option>
+                                <option value="2005" >2005</option>
+                                <option value="2006" >2006</option>
+                                <option value="2007" >2007</option>
+                                <option value="2008" >2008</option>
+                                <option value="2009" >2009</option>
+                                <option value="2010" >2010</option>
+                                <option value="2011" >2011</option>
+                                <option value="2012" >2012</option>
+                                <option value="2013" >2013</option>
+                                <option value="2014" >2014</option>
+                                <option value="2015" >2015</option>
+                                <option value="2016" >2016</option>
+                                <option value="2017" >2017</option>
+                                <option value="2018" >2018</option>
+                                <option value="2019" >2019</option>
+                                <option value="2020" >2020</option>
+                                <option value="2021" >2021</option>
+                                <option value="2022" >2022</option>
+                                <option value="2023" >2023</option>
+                                <option value="2024" >2024</option>
+                                <option value="2025" selected=&#39;selected&#39;>2025</option>
+                        </select>
+                    </div>
+
+
+
+                <div class="form-group col-md-2">
+                    <label for="cbFrecuencia">Frecuencia</label>
+                    <select id="cbFrecuencia" name="cbFrecuencia" style="" class="form-control control-corp select-tabs-container">
+                            <option value="DAILY" selected=&#39;selected&#39;>Diaria</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4" style="">
+                    <label for="cbCalculo">C&#225;lculo</label>
+                    <select id="cbCalculo" name="cbCalculo" style="" class="form-control control-corp select-tabs-container">
+                            <option value="NONE" data-decimales="2" selected=&#39;selected&#39;>Serie original</option>
+                            <option value="INDEX" data-decimales="1" >Indice</option>
+                            <option value="PCT" data-decimales="1" >Var. c/r al per&#237;odo anterior</option>
+                            <option value="YTYPCT" data-decimales="1" >Var. mismo per&#237;odo a&#241;o anterior</option>
+                    </select>
+                </div>
+
+                <input type="hidden" id="cbFechaBase" name="cbFechaBase" value="" />
+
+
+            </div>
+        </form>
+
+        <fieldset id="fsTable" class="x-fieldset">
+            <legend class="bold" id="lgCuadro" data-descname="Indicadores de reajustabilidad diario">
+                Indicadores de reajustabilidad diario
+                    <i title="Metadatos y notas" class="iconBase iconInfo cursorp x-title-t" style="color:#182d4e;" onclick="GetInfoCuadro()"></i>
+            </legend>
+
+            <div style="margin-bottom:8px">
+                <div class="btn-group  flex-wrap btn-group-sm text-right fr">
+
+                    <button type="button" onclick="AddBasket()" class="btn btn-default x-title-t"
+                            title="Agregar a canasta">
+                        <img src="/Siete/Includes/css/images/cart_add.png" alt="" />
+                    </button>
+
+                    <button type="button" onclick="ViewBasket()" class="btn btn-default x-title-t"
+                            title="Ver canasta">
+                        <img src="/Siete/Includes/css/images/cart_view.png" alt="" />
+                    </button>
+
+                    <button type="button" onclick="RemoveBasket()" class="btn btn-default x-title-t"
+                            title="Eliminar canasta">
+                        <img src="/Siete/Includes/css/images/cart_delete.png" alt="" />
+                    </button>
+
+                    <button type="button" onclick="GraficarCuadro()" class="btn btn-default x-title-t btnGraph"
+                            title="Graficar">
+                        <img src="/Siete/Includes/css/images/cart_graficar.png" alt="" />
+                    </button>
+
+                        <button type="button" onclick="GetFileIQY()" class="btn btn-default x-title-t"
+                                title="Mi BDE">
+                            <img src="/Siete/Includes/css/images/cart_iqy8.png" alt="" />
+                        </button>
+
+                    <button type="button" onclick="ExportarExcelCuadro()" class="btn btn-default x-title-t"
+                            title="Exportar a Excel">
+                        <img src="/Siete/Includes/css/images/cart_excel.png" alt="" />
+                    </button>
+
+
+                        <button type="button" onclick="GetFavoritos()" class="btn btn-default x-title-t"
+                                title="Compartir Link">
+                            <img src="/Siete/Includes/css/images/share.png" alt="" />
+                        </button>
+
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            
+
+            <div class="container-fluid-no">
+                <table id="grilla"
+                       data-pagination="true"
+                       
+                       data-locale="es-CL"
+                       data-only-info-pagination="false"
+                       data-pagination-pre-text="Anterior"
+                       data-pagination-next-text="Siguiente"
+                       data-pagination-loop="false"
+                       data-show-extended-pagination="false"
+                       data-page-size="15"
+                       data-fixed-columns="true"
+                       data-fixed-number="2"
+                       class="table table-striped table-sm tableGrid "
+                       style="margin-top:10px">
+                    <thead>
+                        <tr>
+                            <th class="thData" data-width="10">Sel.</th>
+                            <th class="thData al" data-width="250">Serie</th>
+                                <th class="thData" data-width="20">01.Ene.2025</th>
+                                <th class="thData" data-width="20">02.Ene.2025</th>
+                                <th class="thData" data-width="20">03.Ene.2025</th>
+                                <th class="thData" data-width="20">04.Ene.2025</th>
+                                <th class="thData" data-width="20">05.Ene.2025</th>
+                                <th class="thData" data-width="20">06.Ene.2025</th>
+                                <th class="thData" data-width="20">07.Ene.2025</th>
+                                <th class="thData" data-width="20">08.Ene.2025</th>
+                                <th class="thData" data-width="20">09.Ene.2025</th>
+                                <th class="thData" data-width="20">10.Ene.2025</th>
+                                <th class="thData" data-width="20">11.Ene.2025</th>
+                                <th class="thData" data-width="20">12.Ene.2025</th>
+                                <th class="thData" data-width="20">13.Ene.2025</th>
+                                <th class="thData" data-width="20">14.Ene.2025</th>
+                                <th class="thData" data-width="20">15.Ene.2025</th>
+                                <th class="thData" data-width="20">16.Ene.2025</th>
+                                <th class="thData" data-width="20">17.Ene.2025</th>
+                                <th class="thData" data-width="20">18.Ene.2025</th>
+                                <th class="thData" data-width="20">19.Ene.2025</th>
+                                <th class="thData" data-width="20">20.Ene.2025</th>
+                                <th class="thData" data-width="20">21.Ene.2025</th>
+                                <th class="thData" data-width="20">22.Ene.2025</th>
+                                <th class="thData" data-width="20">23.Ene.2025</th>
+                                <th class="thData" data-width="20">24.Ene.2025</th>
+                                <th class="thData" data-width="20">25.Ene.2025</th>
+                                <th class="thData" data-width="20">26.Ene.2025</th>
+                                <th class="thData" data-width="20">27.Ene.2025</th>
+                                <th class="thData" data-width="20">28.Ene.2025</th>
+                                <th class="thData" data-width="20">29.Ene.2025</th>
+                                <th class="thData" data-width="20">30.Ene.2025</th>
+                                <th class="thData" data-width="20">31.Ene.2025</th>
+                                <th class="thData" data-width="20">01.Feb.2025</th>
+                                <th class="thData" data-width="20">02.Feb.2025</th>
+                                <th class="thData" data-width="20">03.Feb.2025</th>
+                                <th class="thData" data-width="20">04.Feb.2025</th>
+                                <th class="thData" data-width="20">05.Feb.2025</th>
+                                <th class="thData" data-width="20">06.Feb.2025</th>
+                                <th class="thData" data-width="20">07.Feb.2025</th>
+                                <th class="thData" data-width="20">08.Feb.2025</th>
+                                <th class="thData" data-width="20">09.Feb.2025</th>
+                                <th class="thData" data-width="20">10.Feb.2025</th>
+                                <th class="thData" data-width="20">11.Feb.2025</th>
+                                <th class="thData" data-width="20">12.Feb.2025</th>
+                                <th class="thData" data-width="20">13.Feb.2025</th>
+                                <th class="thData" data-width="20">14.Feb.2025</th>
+                                <th class="thData" data-width="20">15.Feb.2025</th>
+                                <th class="thData" data-width="20">16.Feb.2025</th>
+                                <th class="thData" data-width="20">17.Feb.2025</th>
+                                <th class="thData" data-width="20">18.Feb.2025</th>
+                                <th class="thData" data-width="20">19.Feb.2025</th>
+                                <th class="thData" data-width="20">20.Feb.2025</th>
+                                <th class="thData" data-width="20">21.Feb.2025</th>
+                                <th class="thData" data-width="20">22.Feb.2025</th>
+                                <th class="thData" data-width="20">23.Feb.2025</th>
+                                <th class="thData" data-width="20">24.Feb.2025</th>
+                                <th class="thData" data-width="20">25.Feb.2025</th>
+                                <th class="thData" data-width="20">26.Feb.2025</th>
+                                <th class="thData" data-width="20">27.Feb.2025</th>
+                                <th class="thData" data-width="20">28.Feb.2025</th>
+                                <th class="thData" data-width="20">01.Mar.2025</th>
+                                <th class="thData" data-width="20">02.Mar.2025</th>
+                                <th class="thData" data-width="20">03.Mar.2025</th>
+                                <th class="thData" data-width="20">04.Mar.2025</th>
+                                <th class="thData" data-width="20">05.Mar.2025</th>
+                                <th class="thData" data-width="20">06.Mar.2025</th>
+                                <th class="thData" data-width="20">07.Mar.2025</th>
+                                <th class="thData" data-width="20">08.Mar.2025</th>
+                                <th class="thData" data-width="20">09.Mar.2025</th>
+                                <th class="thData" data-width="20">10.Mar.2025</th>
+                                <th class="thData" data-width="20">11.Mar.2025</th>
+                                <th class="thData" data-width="20">12.Mar.2025</th>
+                                <th class="thData" data-width="20">13.Mar.2025</th>
+                                <th class="thData" data-width="20">14.Mar.2025</th>
+                                <th class="thData" data-width="20">15.Mar.2025</th>
+                                <th class="thData" data-width="20">16.Mar.2025</th>
+                                <th class="thData" data-width="20">17.Mar.2025</th>
+                                <th class="thData" data-width="20">18.Mar.2025</th>
+                                <th class="thData" data-width="20">19.Mar.2025</th>
+                                <th class="thData" data-width="20">20.Mar.2025</th>
+                                <th class="thData" data-width="20">21.Mar.2025</th>
+                                <th class="thData" data-width="20">22.Mar.2025</th>
+                                <th class="thData" data-width="20">23.Mar.2025</th>
+                                <th class="thData" data-width="20">24.Mar.2025</th>
+                                <th class="thData" data-width="20">25.Mar.2025</th>
+                                <th class="thData" data-width="20">26.Mar.2025</th>
+                                <th class="thData" data-width="20">27.Mar.2025</th>
+                                <th class="thData" data-width="20">28.Mar.2025</th>
+                                <th class="thData" data-width="20">29.Mar.2025</th>
+                                <th class="thData" data-width="20">30.Mar.2025</th>
+                                <th class="thData" data-width="20">31.Mar.2025</th>
+                                <th class="thData" data-width="20">01.Abr.2025</th>
+                                <th class="thData" data-width="20">02.Abr.2025</th>
+                                <th class="thData" data-width="20">03.Abr.2025</th>
+                                <th class="thData" data-width="20">04.Abr.2025</th>
+                                <th class="thData" data-width="20">05.Abr.2025</th>
+                                <th class="thData" data-width="20">06.Abr.2025</th>
+                                <th class="thData" data-width="20">07.Abr.2025</th>
+                                <th class="thData" data-width="20">08.Abr.2025</th>
+                                <th class="thData" data-width="20">09.Abr.2025</th>
+                                <th class="thData" data-width="20">10.Abr.2025</th>
+                                <th class="thData" data-width="20">11.Abr.2025</th>
+                                <th class="thData" data-width="20">12.Abr.2025</th>
+                                <th class="thData" data-width="20">13.Abr.2025</th>
+                                <th class="thData" data-width="20">14.Abr.2025</th>
+                                <th class="thData" data-width="20">15.Abr.2025</th>
+                                <th class="thData" data-width="20">16.Abr.2025</th>
+                                <th class="thData" data-width="20">17.Abr.2025</th>
+                                <th class="thData" data-width="20">18.Abr.2025</th>
+                                <th class="thData" data-width="20">19.Abr.2025</th>
+                                <th class="thData" data-width="20">20.Abr.2025</th>
+                                <th class="thData" data-width="20">21.Abr.2025</th>
+                                <th class="thData" data-width="20">22.Abr.2025</th>
+                                <th class="thData" data-width="20">23.Abr.2025</th>
+                                <th class="thData" data-width="20">24.Abr.2025</th>
+                                <th class="thData" data-width="20">25.Abr.2025</th>
+                                <th class="thData" data-width="20">26.Abr.2025</th>
+                                <th class="thData" data-width="20">27.Abr.2025</th>
+                                <th class="thData" data-width="20">28.Abr.2025</th>
+                                <th class="thData" data-width="20">29.Abr.2025</th>
+                                <th class="thData" data-width="20">30.Abr.2025</th>
+                                <th class="thData" data-width="20">01.May.2025</th>
+                                <th class="thData" data-width="20">02.May.2025</th>
+                                <th class="thData" data-width="20">03.May.2025</th>
+                                <th class="thData" data-width="20">04.May.2025</th>
+                                <th class="thData" data-width="20">05.May.2025</th>
+                                <th class="thData" data-width="20">06.May.2025</th>
+                                <th class="thData" data-width="20">07.May.2025</th>
+                                <th class="thData" data-width="20">08.May.2025</th>
+                                <th class="thData" data-width="20">09.May.2025</th>
+                                <th class="thData" data-width="20">10.May.2025</th>
+                                <th class="thData" data-width="20">11.May.2025</th>
+                                <th class="thData" data-width="20">12.May.2025</th>
+                                <th class="thData" data-width="20">13.May.2025</th>
+                                <th class="thData" data-width="20">14.May.2025</th>
+                                <th class="thData" data-width="20">15.May.2025</th>
+                                <th class="thData" data-width="20">16.May.2025</th>
+                                <th class="thData" data-width="20">17.May.2025</th>
+                                <th class="thData" data-width="20">18.May.2025</th>
+                                <th class="thData" data-width="20">19.May.2025</th>
+                                <th class="thData" data-width="20">20.May.2025</th>
+                                <th class="thData" data-width="20">21.May.2025</th>
+                                <th class="thData" data-width="20">22.May.2025</th>
+                                <th class="thData" data-width="20">23.May.2025</th>
+                                <th class="thData" data-width="20">24.May.2025</th>
+                                <th class="thData" data-width="20">25.May.2025</th>
+                                <th class="thData" data-width="20">26.May.2025</th>
+                                <th class="thData" data-width="20">27.May.2025</th>
+                                <th class="thData" data-width="20">28.May.2025</th>
+                                <th class="thData" data-width="20">29.May.2025</th>
+                                <th class="thData" data-width="20">30.May.2025</th>
+                                <th class="thData" data-width="20">31.May.2025</th>
+                                <th class="thData" data-width="20">01.Jun.2025</th>
+                                <th class="thData" data-width="20">02.Jun.2025</th>
+                                <th class="thData" data-width="20">03.Jun.2025</th>
+                                <th class="thData" data-width="20">04.Jun.2025</th>
+                                <th class="thData" data-width="20">05.Jun.2025</th>
+                                <th class="thData" data-width="20">06.Jun.2025</th>
+                                <th class="thData" data-width="20">07.Jun.2025</th>
+                                <th class="thData" data-width="20">08.Jun.2025</th>
+                                <th class="thData" data-width="20">09.Jun.2025</th>
+                        </tr>
+
+                    </thead>
+                    <tbody id="tbodyGrid">
+                                <tr>
+                                    <td class="nw ac">
+                                        <input type="checkbox" class="chkGrid"
+                                               data-index="0"
+                                               data-cuadro="UF_IVP_DIARIO"
+                                               data-name="Unidad de fomento (UF)"
+                                               data-nameeng="Unit of account (UF)"
+                                               data-header="F073.UFF.PRE.Z.D"
+                                               data-frecuencia=""
+                                               data-calc="NONE"
+                                               data-key="F073"
+                                               data-serie="F073.UFF.PRE.Z.D"
+                                               data-observed="AVERAGED"
+                                               data-decimales="2"
+                                               value="false" />
+                                    </td>
+                                    <td>
+                                            <span class="sname">Unidad de fomento (UF)</span>
+                                    </td>
+                                            <td class="ar col">38.419,17</td>
+                                            <td class="ar col">38.421,65</td>
+                                            <td class="ar col">38.424,12</td>
+                                            <td class="ar col">38.426,60</td>
+                                            <td class="ar col">38.429,08</td>
+                                            <td class="ar col">38.431,55</td>
+                                            <td class="ar col">38.434,03</td>
+                                            <td class="ar col">38.436,51</td>
+                                            <td class="ar col">38.438,98</td>
+                                            <td class="ar col">38.436,50</td>
+                                            <td class="ar col">38.434,02</td>
+                                            <td class="ar col">38.431,53</td>
+                                            <td class="ar col">38.429,05</td>
+                                            <td class="ar col">38.426,57</td>
+                                            <td class="ar col">38.424,09</td>
+                                            <td class="ar col">38.421,61</td>
+                                            <td class="ar col">38.419,13</td>
+                                            <td class="ar col">38.416,64</td>
+                                            <td class="ar col">38.414,16</td>
+                                            <td class="ar col">38.411,68</td>
+                                            <td class="ar col">38.409,20</td>
+                                            <td class="ar col">38.406,72</td>
+                                            <td class="ar col">38.404,24</td>
+                                            <td class="ar col">38.401,76</td>
+                                            <td class="ar col">38.399,28</td>
+                                            <td class="ar col">38.396,80</td>
+                                            <td class="ar col">38.394,32</td>
+                                            <td class="ar col">38.391,84</td>
+                                            <td class="ar col">38.389,36</td>
+                                            <td class="ar col">38.386,88</td>
+                                            <td class="ar col">38.384,41</td>
+                                            <td class="ar col">38.381,93</td>
+                                            <td class="ar col">38.379,45</td>
+                                            <td class="ar col">38.376,97</td>
+                                            <td class="ar col">38.374,49</td>
+                                            <td class="ar col">38.372,01</td>
+                                            <td class="ar col">38.369,54</td>
+                                            <td class="ar col">38.367,06</td>
+                                            <td class="ar col">38.364,58</td>
+                                            <td class="ar col">38.362,10</td>
+                                            <td class="ar col">38.377,09</td>
+                                            <td class="ar col">38.392,09</td>
+                                            <td class="ar col">38.407,09</td>
+                                            <td class="ar col">38.422,10</td>
+                                            <td class="ar col">38.437,12</td>
+                                            <td class="ar col">38.452,14</td>
+                                            <td class="ar col">38.467,16</td>
+                                            <td class="ar col">38.482,20</td>
+                                            <td class="ar col">38.497,23</td>
+                                            <td class="ar col">38.512,28</td>
+                                            <td class="ar col">38.527,33</td>
+                                            <td class="ar col">38.542,38</td>
+                                            <td class="ar col">38.557,45</td>
+                                            <td class="ar col">38.572,51</td>
+                                            <td class="ar col">38.587,59</td>
+                                            <td class="ar col">38.602,67</td>
+                                            <td class="ar col">38.617,75</td>
+                                            <td class="ar col">38.632,84</td>
+                                            <td class="ar col">38.647,94</td>
+                                            <td class="ar col">38.663,05</td>
+                                            <td class="ar col">38.678,15</td>
+                                            <td class="ar col">38.693,27</td>
+                                            <td class="ar col">38.708,39</td>
+                                            <td class="ar col">38.723,52</td>
+                                            <td class="ar col">38.738,65</td>
+                                            <td class="ar col">38.753,79</td>
+                                            <td class="ar col">38.768,93</td>
+                                            <td class="ar col">38.784,08</td>
+                                            <td class="ar col">38.789,07</td>
+                                            <td class="ar col">38.794,07</td>
+                                            <td class="ar col">38.799,07</td>
+                                            <td class="ar col">38.804,06</td>
+                                            <td class="ar col">38.809,06</td>
+                                            <td class="ar col">38.814,06</td>
+                                            <td class="ar col">38.819,06</td>
+                                            <td class="ar col">38.824,06</td>
+                                            <td class="ar col">38.829,06</td>
+                                            <td class="ar col">38.834,06</td>
+                                            <td class="ar col">38.839,06</td>
+                                            <td class="ar col">38.844,06</td>
+                                            <td class="ar col">38.849,06</td>
+                                            <td class="ar col">38.854,06</td>
+                                            <td class="ar col">38.859,07</td>
+                                            <td class="ar col">38.864,07</td>
+                                            <td class="ar col">38.869,08</td>
+                                            <td class="ar col">38.874,08</td>
+                                            <td class="ar col">38.879,09</td>
+                                            <td class="ar col">38.884,10</td>
+                                            <td class="ar col">38.889,10</td>
+                                            <td class="ar col">38.894,11</td>
+                                            <td class="ar col">38.899,12</td>
+                                            <td class="ar col">38.904,13</td>
+                                            <td class="ar col">38.909,14</td>
+                                            <td class="ar col">38.914,15</td>
+                                            <td class="ar col">38.919,16</td>
+                                            <td class="ar col">38.924,18</td>
+                                            <td class="ar col">38.929,19</td>
+                                            <td class="ar col">38.934,20</td>
+                                            <td class="ar col">38.939,22</td>
+                                            <td class="ar col">38.945,69</td>
+                                            <td class="ar col">38.952,17</td>
+                                            <td class="ar col">38.958,65</td>
+                                            <td class="ar col">38.965,12</td>
+                                            <td class="ar col">38.971,60</td>
+                                            <td class="ar col">38.978,08</td>
+                                            <td class="ar col">38.984,56</td>
+                                            <td class="ar col">38.991,04</td>
+                                            <td class="ar col">38.997,53</td>
+                                            <td class="ar col">39.004,01</td>
+                                            <td class="ar col">39.010,50</td>
+                                            <td class="ar col">39.016,98</td>
+                                            <td class="ar col">39.023,47</td>
+                                            <td class="ar col">39.029,96</td>
+                                            <td class="ar col">39.036,45</td>
+                                            <td class="ar col">39.042,94</td>
+                                            <td class="ar col">39.049,43</td>
+                                            <td class="ar col">39.055,92</td>
+                                            <td class="ar col">39.062,41</td>
+                                            <td class="ar col">39.068,91</td>
+                                            <td class="ar col">39.075,41</td>
+                                            <td class="ar col">39.081,90</td>
+                                            <td class="ar col">39.088,40</td>
+                                            <td class="ar col">39.094,90</td>
+                                            <td class="ar col">39.101,40</td>
+                                            <td class="ar col">39.107,90</td>
+                                            <td class="ar col">39.114,40</td>
+                                            <td class="ar col">39.120,91</td>
+                                            <td class="ar col">39.127,41</td>
+                                            <td class="ar col">39.133,92</td>
+                                            <td class="ar col">39.136,44</td>
+                                            <td class="ar col">39.138,96</td>
+                                            <td class="ar col">39.141,49</td>
+                                            <td class="ar col">39.144,01</td>
+                                            <td class="ar col">39.146,53</td>
+                                            <td class="ar col">39.149,06</td>
+                                            <td class="ar col">39.151,58</td>
+                                            <td class="ar col">39.154,10</td>
+                                            <td class="ar col">39.156,63</td>
+                                            <td class="ar col">39.159,15</td>
+                                            <td class="ar col">39.161,67</td>
+                                            <td class="ar col">39.164,20</td>
+                                            <td class="ar col">39.166,72</td>
+                                            <td class="ar col">39.169,25</td>
+                                            <td class="ar col">39.171,77</td>
+                                            <td class="ar col">39.174,30</td>
+                                            <td class="ar col">39.176,82</td>
+                                            <td class="ar col">39.179,35</td>
+                                            <td class="ar col">39.181,87</td>
+                                            <td class="ar col">39.184,40</td>
+                                            <td class="ar col">39.186,92</td>
+                                            <td class="ar col">39.189,45</td>
+                                            <td class="ar col">39.191,97</td>
+                                            <td class="ar col">39.194,50</td>
+                                            <td class="ar col">39.197,03</td>
+                                            <td class="ar col">39.199,55</td>
+                                            <td class="ar col">39.202,08</td>
+                                            <td class="ar col">39.204,61</td>
+                                            <td class="ar col">39.207,13</td>
+                                            <td class="ar col">39.209,66</td>
+                                            <td class="ar col">39.212,19</td>
+                                </tr>
+                                <tr>
+                                    <td class="nw ac">
+                                        <input type="checkbox" class="chkGrid"
+                                               data-index="1"
+                                               data-cuadro="UF_IVP_DIARIO"
+                                               data-name="Indice de valor promedio (IVP)"
+                                               data-nameeng="Average value index (IVP)"
+                                               data-header="F073.IVP.PRE.Z.D"
+                                               data-frecuencia=""
+                                               data-calc="NONE"
+                                               data-key="F073"
+                                               data-serie="F073.IVP.PRE.Z.D"
+                                               data-observed="AVERAGED"
+                                               data-decimales="2"
+                                               value="false" />
+                                    </td>
+                                    <td>
+                                            <span class="sname">Indice de valor promedio (IVP)</span>
+                                    </td>
+                                            <td class="ar col">39.738,69</td>
+                                            <td class="ar col">39.743,48</td>
+                                            <td class="ar col">39.748,28</td>
+                                            <td class="ar col">39.753,07</td>
+                                            <td class="ar col">39.757,87</td>
+                                            <td class="ar col">39.762,66</td>
+                                            <td class="ar col">39.767,46</td>
+                                            <td class="ar col">39.772,25</td>
+                                            <td class="ar col">39.777,05</td>
+                                            <td class="ar col">39.781,60</td>
+                                            <td class="ar col">39.786,15</td>
+                                            <td class="ar col">39.790,70</td>
+                                            <td class="ar col">39.795,26</td>
+                                            <td class="ar col">39.799,81</td>
+                                            <td class="ar col">39.804,36</td>
+                                            <td class="ar col">39.808,92</td>
+                                            <td class="ar col">39.813,47</td>
+                                            <td class="ar col">39.818,03</td>
+                                            <td class="ar col">39.822,58</td>
+                                            <td class="ar col">39.827,14</td>
+                                            <td class="ar col">39.831,69</td>
+                                            <td class="ar col">39.836,25</td>
+                                            <td class="ar col">39.840,81</td>
+                                            <td class="ar col">39.845,37</td>
+                                            <td class="ar col">39.849,92</td>
+                                            <td class="ar col">39.854,48</td>
+                                            <td class="ar col">39.859,04</td>
+                                            <td class="ar col">39.863,60</td>
+                                            <td class="ar col">39.868,16</td>
+                                            <td class="ar col">39.872,72</td>
+                                            <td class="ar col">39.877,29</td>
+                                            <td class="ar col">39.881,85</td>
+                                            <td class="ar col">39.886,41</td>
+                                            <td class="ar col">39.890,97</td>
+                                            <td class="ar col">39.895,54</td>
+                                            <td class="ar col">39.900,10</td>
+                                            <td class="ar col">39.904,67</td>
+                                            <td class="ar col">39.909,23</td>
+                                            <td class="ar col">39.913,80</td>
+                                            <td class="ar col">39.918,36</td>
+                                            <td class="ar col">39.923,61</td>
+                                            <td class="ar col">39.928,85</td>
+                                            <td class="ar col">39.934,10</td>
+                                            <td class="ar col">39.939,35</td>
+                                            <td class="ar col">39.944,60</td>
+                                            <td class="ar col">39.949,85</td>
+                                            <td class="ar col">39.955,10</td>
+                                            <td class="ar col">39.960,35</td>
+                                            <td class="ar col">39.965,60</td>
+                                            <td class="ar col">39.970,85</td>
+                                            <td class="ar col">39.976,11</td>
+                                            <td class="ar col">39.981,36</td>
+                                            <td class="ar col">39.986,61</td>
+                                            <td class="ar col">39.991,87</td>
+                                            <td class="ar col">39.997,12</td>
+                                            <td class="ar col">40.002,38</td>
+                                            <td class="ar col">40.007,64</td>
+                                            <td class="ar col">40.012,90</td>
+                                            <td class="ar col">40.018,15</td>
+                                            <td class="ar col">40.023,41</td>
+                                            <td class="ar col">40.028,67</td>
+                                            <td class="ar col">40.033,93</td>
+                                            <td class="ar col">40.039,19</td>
+                                            <td class="ar col">40.044,46</td>
+                                            <td class="ar col">40.049,72</td>
+                                            <td class="ar col">40.054,98</td>
+                                            <td class="ar col">40.060,25</td>
+                                            <td class="ar col">40.065,51</td>
+                                            <td class="ar col">40.071,18</td>
+                                            <td class="ar col">40.076,85</td>
+                                            <td class="ar col">40.082,52</td>
+                                            <td class="ar col">40.088,20</td>
+                                            <td class="ar col">40.093,87</td>
+                                            <td class="ar col">40.099,54</td>
+                                            <td class="ar col">40.105,22</td>
+                                            <td class="ar col">40.110,90</td>
+                                            <td class="ar col">40.116,57</td>
+                                            <td class="ar col">40.122,25</td>
+                                            <td class="ar col">40.127,93</td>
+                                            <td class="ar col">40.133,61</td>
+                                            <td class="ar col">40.139,29</td>
+                                            <td class="ar col">40.144,97</td>
+                                            <td class="ar col">40.150,65</td>
+                                            <td class="ar col">40.156,33</td>
+                                            <td class="ar col">40.162,02</td>
+                                            <td class="ar col">40.167,70</td>
+                                            <td class="ar col">40.173,38</td>
+                                            <td class="ar col">40.179,07</td>
+                                            <td class="ar col">40.184,76</td>
+                                            <td class="ar col">40.190,44</td>
+                                            <td class="ar col">40.196,13</td>
+                                            <td class="ar col">40.201,82</td>
+                                            <td class="ar col">40.207,51</td>
+                                            <td class="ar col">40.213,20</td>
+                                            <td class="ar col">40.218,89</td>
+                                            <td class="ar col">40.224,58</td>
+                                            <td class="ar col">40.230,28</td>
+                                            <td class="ar col">40.235,97</td>
+                                            <td class="ar col">40.241,66</td>
+                                            <td class="ar col">40.248,25</td>
+                                            <td class="ar col">40.254,83</td>
+                                            <td class="ar col">40.261,42</td>
+                                            <td class="ar col">40.268,01</td>
+                                            <td class="ar col">40.274,60</td>
+                                            <td class="ar col">40.281,19</td>
+                                            <td class="ar col">40.287,78</td>
+                                            <td class="ar col">40.294,37</td>
+                                            <td class="ar col">40.300,96</td>
+                                            <td class="ar col">40.307,56</td>
+                                            <td class="ar col">40.314,16</td>
+                                            <td class="ar col">40.320,75</td>
+                                            <td class="ar col">40.327,35</td>
+                                            <td class="ar col">40.333,95</td>
+                                            <td class="ar col">40.340,55</td>
+                                            <td class="ar col">40.347,15</td>
+                                            <td class="ar col">40.353,75</td>
+                                            <td class="ar col">40.360,36</td>
+                                            <td class="ar col">40.366,96</td>
+                                            <td class="ar col">40.373,57</td>
+                                            <td class="ar col">40.380,17</td>
+                                            <td class="ar col">40.386,78</td>
+                                            <td class="ar col">40.393,39</td>
+                                            <td class="ar col">40.400,00</td>
+                                            <td class="ar col">40.406,61</td>
+                                            <td class="ar col">40.413,22</td>
+                                            <td class="ar col">40.419,84</td>
+                                            <td class="ar col">40.426,45</td>
+                                            <td class="ar col">40.433,07</td>
+                                            <td class="ar col">40.439,68</td>
+                                            <td class="ar col">40.444,60</td>
+                                            <td class="ar col">40.449,52</td>
+                                            <td class="ar col">40.454,44</td>
+                                            <td class="ar col">40.459,36</td>
+                                            <td class="ar col">40.464,28</td>
+                                            <td class="ar col">40.469,21</td>
+                                            <td class="ar col">40.474,13</td>
+                                            <td class="ar col">40.479,05</td>
+                                            <td class="ar col">40.483,98</td>
+                                            <td class="ar col">40.488,90</td>
+                                            <td class="ar col">40.493,83</td>
+                                            <td class="ar col">40.498,76</td>
+                                            <td class="ar col">40.503,68</td>
+                                            <td class="ar col">40.508,61</td>
+                                            <td class="ar col">40.513,54</td>
+                                            <td class="ar col">40.518,47</td>
+                                            <td class="ar col">40.523,40</td>
+                                            <td class="ar col">40.528,33</td>
+                                            <td class="ar col">40.533,26</td>
+                                            <td class="ar col">40.538,19</td>
+                                            <td class="ar col">40.543,12</td>
+                                            <td class="ar col">40.548,05</td>
+                                            <td class="ar col">40.552,98</td>
+                                            <td class="ar col">40.557,92</td>
+                                            <td class="ar col">40.562,85</td>
+                                            <td class="ar col">40.567,79</td>
+                                            <td class="ar col">40.572,72</td>
+                                            <td class="ar col">40.577,66</td>
+                                            <td class="ar col">40.582,59</td>
+                                            <td class="ar col">40.587,53</td>
+                                            <td class="ar col">40.592,47</td>
+                                </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+
+
+        </fieldset>
+
+                <div class="alert alert-info mb-0" role="alert">
+                    <i class="iconBase iconNotes cursorp x-title-t" style="color:#182d4e;"></i> Notas
+
+                        <p class="mb-1">NC: No corresponde c&#225;lculo dado que uno de los valores para la determinaci&#243;n de la variaci&#243;n, es negativa.</p>
+                </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function RemoveBasketExecute() {
+
+        var params = {
+            __RequestVerificationToken: getVToken(),
+            action: "RemoveBasketExecute"
+        };
+
+        var before = function () { }
+
+        var callback = function () {
+
+            CloseDialog();
+            SelfRedirect();
+        }
+
+        xJsonObj("/Siete/ES/Siete/ActionSiete", params, before, callback);
+    }
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="modalDeleteBasket" tabindex="-1" role="dialog" aria-labelledby="lblmodalDeleteBasket" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-error">
+                <h5 class="modal-title" id="lblmodalDeleteBasket">Eliminar canasta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="msgDeleteBasket" class=""></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="RemoveBasketExecute()">Aceptar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function ExecuteExportExcel() {
+
+        if ($(".radioExport:checked").length == 0) {
+            showBlockUIError("Debe seleccionar una opción");
+            return false;
+        }
+
+        var IsVertical = $("#radioExportV").is(":checked");
+
+        var IsFullSeries = $("#checkExportFull").is(":checked");
+
+        $("#IsVertical").val(IsVertical);
+        $("#IsFullSeries").val(IsFullSeries);
+
+        var cuadro = GetStore("UF_IVP_DIARIO", { cuadro_id: 0, items: [] });
+        var seriesStr = JSON.stringify(cuadro.items);
+        console.log(cuadro);
+        console.log(seriesStr);
+        $("#Export_SeriesText").val(seriesStr);
+
+        $("#Export_FechaInicio").val($("#cbFechaInicio").val() || "");
+        $("#Export_FechaDiaria").val($("#cbFechaDiaria").val() || "");
+        $("#Export_FechaTermino").val($("#cbFechaTermino").val() || "");
+
+        CloseDialog();
+
+        $("#frmExportExcel").submit();
+
+    }
+</script>
+
+<div class="modal fade" id="modalExport" tabindex="-1" role="dialog" aria-labelledby="lblmodalExport" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h5 class="modal-title" id="lblmodalExport">Base de Datos Estad&#237;sticos - Exportar serie(s) a excel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="">
+
+                <fieldset class="x-fieldset">
+                    <legend class="bold">Exportar a Excel</legend>
+
+
+
+                    <div class="form-check" style=visibility:hidden;height:0px;>
+                        <input class="form-check-input radioExport" disabled=&#39;disabled&#39; type="radio" name="radioExport" id="radioExportH" value="true">
+                        <label class="form-check-label" for="radioExportH">Horizontal</label>
+                    </div>
+                    <div class="form-check" style=visibility:hidden;height:0px;>
+                        <input class="form-check-input radioExport" checked=&#39;checked&#39; type="radio" name="radioExport" id="radioExportV" value="true">
+                        <label class="form-check-label" for="radioExportV">Vertical</label>
+                    </div>
+                    <div class="form-check" style=visibility:visible;>
+                        <input class="form-check-input radioExport" checked=&#39;checked&#39; type="radio" name="checkExport" id="checkExportOneYear" value="true">
+                        <label class="form-check-label" for="checkExport">A&#241;o seleccionado</label>
+                    </div>
+                    <div class="form-check" style=visibility:visible;>
+                        <input class="form-check-input radioExport" type="radio" name="checkExport" id="checkExportFull" value="true">
+                        <label class="form-check-label" for="checkExport">Todos los a&#241;os (M&#225;x. 25 series)</label>
+                    </div>
+
+                </fieldset>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="ExecuteExportExcel()">Aceptar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="frmExportExcel" action="/Siete/ES/Siete/DownloadExcel" method="post" target="_blank">
+
+    <input name="__RequestVerificationToken" type="hidden" value="LVCOVXXJ_iiJtLW-nJ56PqwoHX32vWZRr9903HWzUwV-a_tf8IQbD9WiwRS85g-BwgpksTi4FdYC3DRcbgKy0Vzl9vQ1" />
+    <input type="hidden" id="IsVertical" name="IsVertical" value="false" />
+    <input type="hidden" id="IsFullSeries" name="IsFullSeries" value="false" />
+    <input type="hidden" id="codCuadro" name="codCuadro" value="UF_IVP_DIARIO" />
+    <input type="hidden" id="Export_SeriesText" name="Series" value="" />
+    <input type="hidden" id="Export_frecuencia" name="frecuencia" value="DAILY" />
+    <input type="hidden" id="Export_calculo" name="calculo" value="NONE" />
+    <input type="hidden" id="Export_FechaInicio" name="fechaInicio" value="" />
+    <input type="hidden" id="Export_FechaDiaria" name="fechaDiaria" value="" />
+    <input type="hidden" id="Export_FechaTermino" name="fechaTermino" value="" />
+
+</form>
+
+
+
+
+
+<script>
+
+
+        function GetFileIQY() {
+
+            $('#modalAddIn').modal('toggle');
+
+            var cuadro = GetStore("UF_IVP_DIARIO", { cuadro_id: 0, items: [] });
+
+            var params = {
+            __RequestVerificationToken: getVToken(),
+                Series: JSON.stringify(cuadro.items),
+                idCuadro: "UF_IVP_DIARIO",
+                action: "ValidateIQY"
+            };
+
+            var callback = function () {
+
+                if (xJSONResult.result != parseInt("1")) {
+                    showBlockUIError(xJSONResult.message);
+                    return false;
+                }
+
+                var decimales = $("#cbCalculo option:selected").data("decimales") || 0;
+
+                $("#iqyNumDecimales").val(decimales);
+                $("#iqySeries").val(JSON.stringify(cuadro.items));
+
+                $("#frmIQY").submit();
+            }
+
+            $("#btnIQYContinue").off();
+            $("#btnIQYContinue").on("click", function () {
+                xJsonObj("/Siete/ES/Siete/ActionSiete", params, function () { }, callback);
+            })
+
+            $("#btnIQYInstructions").on("click", function () {
+                $('#modalAddInHelp').modal('toggle');
+            })
+
+        }
+
+        
+
+</script>
+
+<div class="modal fade" id="modalAddIn" tabindex="-1" role="dialog" aria-labelledby="lblmodalAddIn" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h5 class="modal-title" id="lblmodalAddIn">Mi BDE</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="">
+
+                <fieldset class="x-fieldset">
+                    <legend class="bold">Informaci&#243;n</legend>
+
+                    <p>Para poder utilizar "Mi BDE", debe instalar un complemento Add-In para Excel.</p>
+
+                    <p class="ac">
+                        Si usted ya lo instal&#243; en su equipo, presione:
+                        <button type="button" style="margin-top: 4px !important;" 
+                                id="btnIQYContinue" class="db btn btn-primary btn-sm col-8 ma">
+                            Continuar
+                        </button>
+                    </p>
+
+                    <p class="ac">
+                        Para instalar complemento Add-In presione::
+                        <button type="button" style="margin-top: 4px !important;"
+                                id="btnIQYInstructions" class="db btn btn-primary btn-sm col-8 ma">
+                            Instrucciones y Descarga
+                        </button>
+                    </p>
+
+                    <p style="font-size: .6rem;margin-bottom: 3px;margin-top: 24px;">Para mayor informaci&#243;n sobre complementos de Office consulte en el siguiente enlace: <br /> <a href="https://docs.microsoft.com/es-es/office/dev/add-ins/">https://docs.microsoft.com/es-es/office/dev/add-ins/</a></p>
+
+                </fieldset>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalAddInHelp" tabindex="-1" role="dialog" aria-labelledby="lblmodalAddInHelp" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h5 class="modal-title" id="lblmodalAddInHelp">Instrucciones para instalación de Excel Add-In</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="">
+
+
+                <ol>
+                    <li>
+                        Presione el botón para Descargar archivo Add-In Excel.
+                        <a style="margin-top: 4px !important;margin-bottom: 5px;" id="" class="db btn btn-primary btn-sm col-6 " href="https://si3.bcentral.cl/estadisticas/principal1/aplicaciones/MiBDEExcelAddIn/Add.In.Setup.msi">
+                            Descarga
+                        </a>
+
+                    </li>
+                    <li style="margin-top: 5px;">
+                        Descargar el archivo "Add.In.Setup.msi".  Seleccionar Abrir. 
+                        <p><img src="/Siete/Includes/img/help-addin/1.png" class="img-fluid" alt="" style="margin-top: 5px;margin-bottom: 5px;"></p>
+                    </li>
+                    <li style="margin-top: 5px;margin-bottom: 5px;">
+                        En la ventana del instalador (WIzard), seguir instrucciones por defecto para instalar.
+                        <p><img src="/Siete/Includes/img/help-addin/2.png" class="img-fluid" style="border: solid;max-width: 75%;margin-top: 5px;margin-bottom: 5px;" alt=""></p>
+                    </li>
+                    
+                    <li style="margin-top: 5px;">
+                        La próxima vez que inicie Microsoft® Excel®, se mostrará la pestaña "BCCh" como se indica en el siguiente ejemplo:
+                        <p><img src="/Siete/Includes/img/help-addin/4.png" class="img-fluid" alt="" style="margin-top: 5px;margin-bottom: 5px;"></p>
+                    </li>
+                    <li>
+                        Ingrese  Año Inicial y Final en las celdas correpondientes de la hoja y dentro de la pestaña "BCCh" podrá utilizar la funcionalidad Mi BDE presionando botón OBTENER DATOS.
+                        <p><img src="/Siete/Includes/img/help-addin/5.png" class="img-fluid" alt="" style="margin-top: 5px;margin-bottom: 5px;"></p>
+                    </li>
+                </ol>
+
+                <p style="font-size: .6rem;margin-bottom: 3px;margin-top: 24px;" class="ac">
+                    Para mayor información sobre agregar o quitar complementos Office consulte en el siguiente enlace:
+                    <br /> <a target="_blank" href="https://support.microsoft.com/es-es/office/agregar-o-quitar-complementos-en-excel-0af570c4-5cf3-4fa9-9b88-403625a0b460">https://support.microsoft.com/es-es/office/agregar-o-quitar-complementos-en-excel</a>
+                </p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Continuar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <form id="frmIQY" method="post" action="/Siete/ES/Siete/DownloadIQY" target="_blank">
+        <input name="__RequestVerificationToken" type="hidden" value="SZ0BOeiZeTQBTtMauqAujJpA1xPkCYwKfidwtfUcI0t9YZcEDzVwivHCvUWYRUqSt-XKuzClONGX7kgAr0RuEkI_EZc1" />
+
+        <input type="hidden" name="frecuencia" id="frecuencia_cua" value="DAILY" />
+        <input type="hidden" name="calculo" id="calculo_cua" value="NONE" />
+        <input type="hidden" name="idCuadro" value="UF_IVP_DIARIO" />
+        <input type="hidden" name="fechaBase" value="01-01-2025" />
+        <input type="hidden" name="numDecimales" id="iqyNumDecimales" value="" />
+        <input type="hidden" name="Series" id="iqySeries" value="" />
+
+    </form>
+
+
+
+
+
+
+
+<script type="text/javascript">
+    ; (function ($) {
+        $(function () {
+
+            SetResize();
+
+            $.fn.hasScrollBar = function () {
+                return this.get(0).scrollHeight > this.height();
+            }
+
+            var IsMobile = "False".bool();
+
+            $(window).on("orientationchange", function () {
+
+                if (IsMobile) {
+                    setTimeout(function () {
+                        SetResize();
+                    }, 300);
+                }
+
+            });
+
+        });
+    })(jQuery);
+</script>
+
+
+
+
+
+    <script>
+        Config.IsIPAD = "False".bool()
+    </script>
+
+
+    <footer id="footer" class="footer" style="">
+
+        <div class="container-corp position-relative">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-12">
+                        <div class="footer-section">
+                            <ul class="footer-links">
+
+                                <li class="footer-item">
+                                    <a title="Central en tu Vida" class="footer-link iconoExterno " href="https://www.centralentuvida.cl/" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Central en tu Vida', 'clic link')">Central en tu Vida</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Billetes y Monedas" class="footer-link iconoExterno " href="https://www.billetesymonedas.cl/" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Central en tu Vida', 'clic link')">Billetes y Monedas</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Museo Numism&#225;tico" class="footer-link iconoExterno " href="https://www.museobancocentral.cl/" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Central en tu Vida', 'clic link')">Museo Numism&#225;tico</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Base de Datos Estad&#237;sticos" class="footer-link iconoExterno " href="https://si3.bcentral.cl/siete" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Central en tu Vida', 'clic link')">Base de Datos Estad&#237;sticos</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Biblioteca" class="footer-link iconoExterno " href="https://portalbiblioteca.bcentral.cl/" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Central en tu Vida', 'clic link')">Biblioteca</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Repositorio Digital" class="footer-link iconoExterno " href="https://repositoriodigital.bcentral.cl/" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Central en tu Vida', 'clic link')">Repositorio Digital</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Glosario" class="footer-link iconoExterno " href="https://si3.bcentral.cl/estadisticas/Principal1/enlaces/aplicaciones/index.html" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Central en tu Vida', 'clic link')">Glosario</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="footer-section">
+                            <ul class="footer-links">
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Oportunidades de Trabajo" class="footer-link  " href="https://www.bcentral.cl/web/banco-central/el-banco/trabaja-en-el-bc/oportunidades-de-trabajo" target="_self" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Oportunidades de Trabajo', 'clic link')">Oportunidades de Trabajo</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Transparencia Activa" class="footer-link  " href="https://www.bcentral.cl/web/banco-central/el-banco/transparencia/transparencia-activa" target="_self" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Oportunidades de Trabajo', 'clic link')">Transparencia Activa</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Acceso a la Informaci&#243;n" class="footer-link  " href="https://www.bcentral.cl/web/banco-central/el-banco/transparencia/acceso-a-la-informacion" target="_self" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Oportunidades de Trabajo', 'clic link')">Acceso a la Informaci&#243;n</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Ley de Lobby" class="footer-link  " href="https://www.bcentral.cl/web/banco-central/ley-del-lobby" target="_self" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Oportunidades de Trabajo', 'clic link')">Ley de Lobby</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Ley Org&#225;nica Constitucional" class="footer-link iconoExterno " href="https://www.leychile.cl/Navegar?idNorma=30216" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Oportunidades de Trabajo', 'clic link')">Ley Org&#225;nica Constitucional</a>
+                                </li>
+
+
+
+
+                                <li class="footer-item">
+                                    <a title="Estrategia Nacional ALA/CFT" class="footer-link iconoExterno " href="https://www.estrategiaantilavado.cl/" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Oportunidades de Trabajo', 'clic link')">Estrategia Nacional ALA/CFT</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="footer-section">
+                            <ul class="footer-links">
+
+                                <li class="footer-item">
+                                    <a title="Cont&#225;ctenos" class="footer-link  " href="https://contactocentral.bcentral.cl/" target="_self" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Contacto', 'clic link')">Cont&#225;ctenos</a>
+                                </li>
+
+                                <li class="footer-item">
+                                    <a title="Preguntas Frecuentes" class="footer-link  " href="https://www.bcentral.cl/web/banco-central/preguntas-frecuentes" target="_self" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Contacto', 'clic link')">Preguntas Frecuentes</a>
+                                </li>
+
+                                <li class="footer-item">
+                                    <a title="Cat&#225;logo de pinturas" class="footer-link iconoExterno " href="https://coleccion.bcentral.cl/web/coleccion-de-pinturas" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Contacto', 'clic link')">Cat&#225;logo de pinturas</a>
+                                </li>
+
+                                <li class="footer-item">
+                                    <a title="Recorrido virtual Edificio BCCh" class="footer-link iconoExterno " href="https://my.matterport.com/show/?m=isFyFcFnTJe" target="_blank" data-senna-off="true" onclick="javascript: marcaje_google_analytics(this, 'FOOT-Contacto', 'clic link')"
+                                        style="width: 280px;display: inline-block;">Recorrido virtual Edificio BCCh</a>
+                                </li>
+
+                                <li class="footer-item">
+                                    <a title="Recorrido virtual Museo" class="footer-link iconoExterno " href="https://www.museobancocentral.cl/tour_virtual.html" target="_blank" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Contacto', 'clic link')">Recorrido virtual Museo</a>
+                                </li>
+
+                                <li class="footer-item">
+                                    <a title="Suscripci&#243;n" class="footer-link  " href="https://www.bcentral.cl/web/banco-central/suscripcion" target="_self" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Contacto', 'clic link')">Suscripci&#243;n</a>
+                                </li>
+
+                                <li class="footer-item">
+                                    <a title="Condiciones de uso" class="footer-link  " href="https://www.bcentral.cl/web/banco-central/condiciones-de-uso" target="_self" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Contacto', 'clic link')">Condiciones de uso</a>
+                                </li>
+
+                                <li class="footer-item">
+                                    <a title="Mapa web" class="footer-link  " href="https://www.bcentral.cl/web/banco-central/mapa-web" target="_self" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Contacto', 'clic link')">Mapa web</a>
+                                </li>
+
+                                <li class="footer-item">
+                                    <a title="Transmisi&#243;n en vivo" class="footer-link iconoExterno " href="https://www.youtube.com/watch?v=uXVmVXBtSiM" target="_self" data-senna-off="true" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Contacto', 'clic link')">Transmisi&#243;n en vivo</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="footer-rrss ac">
+                            <ul style="width: 340px;">
+
+                                <li class="social-item">
+                                    <a class="social-link iconoExterno" href="https://www.youtube.com/user/BancoCentralChile" target="_blank" data-senna-off="true" title="Youtube" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Youtube', 'clic link')">
+                                        <img alt="Youtube" disablewebedit="True" src="/Siete/Includes/css/images/youtube.png">
+                                    </a>
+                                </li>
+
+                                <li class="social-item">
+                                    <a class="social-link iconoExterno" href="https://www.flickr.com/photos/bancocentraldechile/" target="_blank" data-senna-off="true" title="Flickr" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Youtube', 'clic link')">
+                                        <img alt="Flickr" disablewebedit="True" src="/Siete/Includes/css/images/flickr.png">
+                                    </a>
+                                </li>
+
+                                <li class="social-item">
+                                    <a class="social-link iconoExterno" href="https://twitter.com/bcentralchile" target="_blank" data-senna-off="true" title="Twitter" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Youtube', 'clic link')">
+                                        <img alt="Twitter" disablewebedit="True" src="/Siete/Includes/css/images/twitter.png">
+                                    </a>
+                                </li>
+
+                                <li class="social-item">
+                                    <a class="social-link iconoExterno" href="https://www.instagram.com/bancocentralchile/" target="_blank" data-senna-off="true" title="Instagram" onclick="javascript:marcaje_google_analytics(this, 'FOOT-Youtube', 'clic link')">
+                                        <img alt="Instagram" disablewebedit="True" src="/Siete/Includes/css/images/instagram.png" />
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    
+
+                                
+
+                    <div class="mb-3 mt-8">
+                        <a class="footer-logo db" onclick="">
+                            <img alt="Banco Central de Chile" class="visible-desk" src="/Siete/Includes/css/images/logoFooter.png" style="height: 87px;">
+                        </a>
+                        
+                        
+                    </div>
+
+                    <div class="col-12">
+                        <span class="db ar" style="font-size: .55rem;text-align: right;color: #7d7c7c;">v1.0.2.0</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        
+    </footer>
+
+    <script type="text/javascript">
+
+        ; (function ($) {
+            $(function () {
+
+                callMenuButton();
+                fullHeight();
+                KeepAlive();
+
+                moment.locale(Config.lngDate);
+
+                SetLogo();
+
+                $(window).resize(function () {
+                    SetLogo();
+                });
+
+            });
+        })(jQuery);
+
+        function SetLogo() {
+
+            var width = $(".wrapper").width();
+
+
+            if (!$(".navbar-collapse").hasClass("show")) {
+
+                if (width >= 975) {
+
+                    $(".logoMovil").hide();
+                } else {
+                    $(".logoMovil").show();
+                }
+            }
+
+            if ($(".wrapper").length == 0) {
+                width = $(".container-fluid").width();
+
+                if (width >= 975 || $(".navbar-brand img").is(":visible")) {
+
+                    $(".logoMovil").hide();
+                } else {
+                    $(".logoMovil").show();
+                }
+            }
+
+            if (width < 510) {
+                $(".logoMovil").css("top", "44px");
+            } else {
+                $(".logoMovil").css("top", "24px");
+            }
+        }
+
+        function ChangeLang() {
+
+            var IsEnglish = "False".bool();
+
+            var URL = "/Siete/en";
+
+            if (IsEnglish) {
+                URL = "/Siete/";
+            }
+
+            LinkRedirect(URL);
+        }
+
+        function validateSearch() {
+
+            var criterio = $.trim($("#criterio").val());
+
+            if (criterio == "") {
+                showBlockUIError("Debe ingresar un criterio de búsqueda");
+                return false;
+            } else {
+                //console.log("ok");
+                return true;
+            }
+        }
+
+        function GetContacto() {
+
+            var opt = {
+                title: "Cont&#225;ctenos",
+                url: "/Siete/ES/Main/GetContacto",
+                params: {
+                    __RequestVerificationToken: getVToken()
+                },
+                size: "modal-lg",
+                callback: function () {
+
+                }
+            }
+
+            GetModalContent(opt);
+        }
+
+        function GetMisEstadisticas() {
+
+            var opt = {
+                title: "Mis Estad&#237;sticas",
+                url: "/Siete/ES/Main/GetMisEstadisticas",
+                params: {
+                    __RequestVerificationToken: getVToken()
+                },
+                size: "modal-lg",
+                callback: function () {
+
+                }
+            }
+
+            GetModalContent(opt);
+        }
+
+
+        function KeepAlive() {
+
+            var time_out = parseInt("180000");
+            setInterval('GetKeepAlive()', time_out);
+
+        }
+
+        function GetKeepAlive() {
+            var params = {
+                __RequestVerificationToken: getVToken(),
+                action: "KeepAlive"
+            };
+
+            var before = function () { }
+
+            var callback = function () { }
+
+            xJsonObj("/Siete/ES/Siete/ActionSiete", params, before, callback);
+        }
+
+    </script>
+
+    <script>
+
+    function buscar_cross_browser(e) {
+        var texto_a_buscar = '';
+        //texto_a_buscar = document.form1.txtBoxBuscador.value; // PRUEBAS 29-Jun-2011
+        texto_a_buscar = document.getElementById("criterio").value;
+
+        texto_a_buscar = trim(texto_a_buscar);
+
+        var tecla = (document.all) ? e.keyCode : e.which;
+        //alert('tecla: ' + tecla);
+
+        if (IsCaracterEspecial(tecla)) {
+            return false;
+        }
+
+        else if (tecla == 13) {
+            if (texto_a_buscar.length > 0 && texto_a_buscar.length < 255) {
+                // Texto es igual a blanco o texto Mayor a 255
+                if ("yes" == "yes")
+                {
+                    link_ir();
+                }
+                else
+                {
+                    $('#frmBusca').submit();
+                }
+
+            }
+            return false;
+        }
+        return true;
+    }
+
+    function IsCaracterEspecial(tecla) {
+        // Función qie devuelve un true en caso que el caracter ingresado por teclado
+        //  sea un caracter especial, caso contrario devuelve un false
+        // La lista de caracteres válidos es la siguiente:
+        if ((tecla >= "a".charCodeAt(0) && tecla <= "z".charCodeAt(0))
+            || (tecla >= "A".charCodeAt(0) && tecla <= "Z".charCodeAt(0))
+            || (tecla >= "0".charCodeAt(0) && tecla <= "9".charCodeAt(0))
+            || (tecla == " ".charCodeAt(0))
+            || (tecla == 225)
+            || (tecla == 233)
+            || (tecla == 237)
+            || (tecla == 243)
+            || (tecla == 250)
+            || (tecla == 241)
+            // Todas las vocales en mayúsculas y con acento + Ñ
+            || (tecla == 193)
+            || (tecla == 201)
+            || (tecla == 205)
+            || (tecla == 211)
+            || (tecla == 218)
+            || (tecla == 209)
+            || (tecla == 13)
+            // Se acepta el punto en el buscador por texto libre como tmb
+            // en el que busca por código de serie
+            // 19-Ago-2010 Por FSánchez
+            || (tecla == 46)
+        ) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    // Descripción: Función que elimina espacios en blanco
+    function trim(texto) {
+        return texto.replace(/^\s+/g, '').replace(/\s+$/g, '')
+    }
+
+    </script>
+
+
+
+    
+    <script type="text/javascript">
+    function link_ir() {
+
+        var idioma = "";
+
+        var IsEnglish = "False";
+
+        //alert("False");
+        //alert("es-CL");
+
+        if (IsEnglish.toLocaleLowerCase() === "true") {
+            idioma = "&Idioma=EN";
+        }
+        else
+        {
+            idioma = "&Idioma=ES";
+        }
+
+        //var valor_option = document.getElementById("option_order").value;
+        var link = "https://si3.bcentral.cl/Search/Buscar/Index/?st=" + document.getElementById('criterio').value + idioma; // + valor_option;
+
+        console.log(link);
+
+        //window.location.href = link;
+        window.open(link, '_blank');
+    }
+    </script>
+
+
+
+    <script src="/Siete/Includes/datepicker/bootstrap-datepicker.min.js"></script>
+<script src="/Siete/Includes/datepicker/bootstrap-datepicker.locales.js"></script>
+<script src="/Siete/Includes/js/highstock.js"></script>
+<script src="/Siete/Includes/js/modules/exporting.js"></script>
+<script src="/Siete/Includes/js/export-csv.js"></script>
+
+
+    <style>
+        .logoMovil {
+            display: none;
+            position: absolute;
+            top: 24px;
+            width: auto;
+            max-height: 40px;
+            left: 12px;
+        }
+    </style>
+
+    <div class="">
+        <a href="https://si3.bcentral.cl/siete/"><img class="logoMovil" src="/Siete/Includes/css/images/layout_set_logo.png"></a>
+    </div>
+
+
+    
+
+
+<script type="text/javascript">
+
+    ; (function ($) {
+        $(function () {
+
+
+            $("#btnIngresar").on("click", GetIniciarSesion);
+            $("#btnRegistro").on("click", GetRegistrarse);
+
+        });
+    })(jQuery);
+
+
+    window.addEventListener('message', function (e) {
+
+        const data = e.data;
+        const decoded = JSON.parse(data);
+
+        if (decoded.action == 'closeDialog') {
+            DialogClose();
+        }
+
+        if (decoded.action == 'refresh') {
+            SelfRedirect();
+        }
+
+        if (decoded.action == 'modal') {
+            SetActiveModalSSO(decoded.key, decoded.user, decoded.tmp)
+        }
+
+        if (decoded.action == 'logout') {
+            LogoutSSO()
+        }
+
+        
+    });
+
+    function SetActiveModalSSO(index, user, tmp) {
+
+        DialogClose();
+
+        if (index === 1) {
+            GetIniciarSesion();
+        }
+
+        if (index === 2) {
+            GetRegistrarse();
+        }
+
+        if (index === 3) {
+            GetRecuperarPass();
+        }
+
+        if (index === 4) {
+            GetCambiaPass(user);
+        }
+    }
+
+    function GetIniciarSesion() {
+
+        DialogClose();
+        var urlLogin = "https://si3.bcentral.cl/ACuser/Account/Login/?appId=cod_bde";
+
+        var $divModal = $("#modalLogin");
+
+        $divModal.modal({
+            keyboard: false,
+            backdrop: 'static'
+        })
+
+        $divModal.on('shown.bs.modal', function (e) {
+            $(this).find('iframe').attr('src', urlLogin)
+        })
+
+        $divModal.on('hidden.bs.modal', function (e) {
+            $(this).find('iframe').attr('src', "about:blank");
+        });
+    }
+
+    function GetRegistrarse() {
+
+
+        DialogClose();
+        var urlLogin = "https://si3.bcentral.cl/ACuser/Account/Registro/?appId=cod_bde";
+
+        var $divModal = $("#modalRegister");
+
+        $divModal.modal({
+            keyboard: false,
+            backdrop: 'static'
+        })
+
+        $divModal.on('shown.bs.modal', function (e) {
+            $(this).find('iframe').attr('src', urlLogin);
+        })
+
+        $divModal.on('hidden.bs.modal', function (e) {
+            $(this).find('iframe').attr('src', "about:blank");
+        });
+    }
+
+    function GetRecuperarPass() {
+
+        DialogClose();
+        var urlLogin = "https://si3.bcentral.cl/ACuser/Account/Recuperar/?appId=cod_bde";
+
+        var $divModal = $("#modalRecuperar");
+
+        $divModal.modal({
+            keyboard: false,
+            backdrop: 'static'
+        })
+
+        $divModal.on('shown.bs.modal', function (e) {
+            $(this).find('iframe').attr('src', urlLogin)
+        })
+
+        $divModal.on('hidden.bs.modal', function (e) {
+            $(this).find('iframe').attr('src', "about:blank");
+        });
+    }
+
+    function GetCambiaPass(user, tmp)
+    {
+        DialogClose();
+        var urlLogin = "https://si3.bcentral.cl/ACuser/Account/Modificar?appId=cod_bde&userKey=" + user + "&forgot=1&tmp=" + 0;
+
+        var $divModal = $("#modalCambiaPass");
+
+        $divModal.modal({
+            keyboard: false,
+            backdrop: 'static'
+        })
+
+        $divModal.on('shown.bs.modal', function (e) {
+            $(this).find('iframe').attr('src', urlLogin)
+        })
+
+        $divModal.on('hidden.bs.modal', function (e) {
+            $(this).find('iframe').attr('src', "about:blank");
+        });
+    }
+
+
+    function LogoutSSO() {
+
+        $.removeCookie('AccesoCentral_Token', { path: '/' });
+        $('#frmLogout').submit();
+    }
+
+</script>
+
+<style>
+
+    .frameSSO {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100% !important;
+        border: 0;
+    }
+
+    .frameModificar {
+        position: relative;
+/*        top: 0;
+        left: 0;*/
+        height: 100%;
+        width: 100% !important;
+        border: 0;
+    }
+
+    .holds-the-iframe {
+        background: url(https://si3.bcentral.cl/siete//Includes/css/images/ajax-loader_2.gif) center center no-repeat;
+        min-height: 200px;
+    }
+
+
+    .modal-autoheight .modal-body {
+      position: relative;
+      overflow-y: auto;
+      min-height: 520px !important;
+      max-height: 600px !important;
+    }
+
+    .modal-autoheight2 .modal-body {
+      position: relative;
+      overflow-y: auto;
+      min-height: 670px !important;
+    }
+
+    .modal-autoheight3 .modal-body {
+        position: relative;
+        overflow-y: auto;
+        min-height: 400px !important;
+        max-height: 600px !important;
+    }
+
+</style>
+
+
+
+
+<div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="lblmodalLogin" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-autoheight modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h5 class="modal-title" id="lblmodalLogin">Usuario Registrado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0">
+
+                <div class="holds-the-iframe">
+                    <iframe id="iframeLogin" class="frameSSO" src="" style="" frameborder="0" allowfullscreen></iframe>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modalRegister" tabindex="-1" role="dialog" aria-labelledby="lblmodalRegister" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-autoheight2 modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h5 class="modal-title" id="lblmodalRegister">Registrarse</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0;">
+
+                <div class="holds-the-iframe">
+                    <iframe id="iframeRegister" class="frameSSO" src="" style="" frameborder="0" allowfullscreen></iframe>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalRecuperar" tabindex="-1" role="dialog" aria-labelledby="lblmodalRecuperar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-autoheight3 modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h5 class="modal-title" id="lblmodalRecuperar">Recuperar Contrase&#241;a</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0">
+
+                <div class="holds-the-iframe">
+                    <iframe id="iframeRecuperar" class="frameSSO" src="" style="" frameborder="0" allowfullscreen></iframe>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalCambiaPass" tabindex="-1" role="dialog" aria-labelledby="lblmodalCambiaPass" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-autoheight modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-primary">
+                <h5 class="modal-title" id="lblmodalCambiaPass">Cambiar Contrase&#241;a</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding:0">
+
+                <div class="holds-the-iframe">
+                    <iframe id="iframeCambiaPass" class="frameSSO" src="" style="" frameborder="0" allowfullscreen></iframe>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<form action="https://si3.bcentral.cl/ACuser/Account/Logout/" id="frmLogout" method="get">
+    <input type="hidden" name="appId" value="cod_bde" />
+    <input type="hidden" name="referer" value="https://si3.bcentral.cl/siete/" />
+</form>
+
+</body>
+
+
+</html>
