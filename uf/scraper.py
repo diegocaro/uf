@@ -21,25 +21,31 @@ def parse_date(date_str: str) -> str:
     Convierte una fecha del formato DD.MMM.YYYY a YYYY-MM-DD.
     """
     month_map = {
-        "Ene": "01",
-        "Feb": "02",
-        "Mar": "03",
-        "Abr": "04",
-        "May": "05",
-        "Jun": "06",
-        "Jul": "07",
-        "Ago": "08",
-        "Sep": "09",
-        "Oct": "10",
-        "Nov": "11",
-        "Dic": "12",
+        "ene": "01",
+        "feb": "02",
+        "mar": "03",
+        "abr": "04",
+        "may": "05",
+        "jun": "06",
+        "jul": "07",
+        "ago": "08",
+        "sep": "09",
+        "oct": "10",
+        "nov": "11",
+        "dic": "12",
     }
 
-    if "." in date_str and date_str.count(".") == 2:
-        day, month_abbr, year = date_str.split(".")
-        if month_abbr in month_map:
-            return f"{year}-{month_map[month_abbr]}-{day.zfill(2)}"
-    return date_str
+    parts = date_str.split(".")
+    if len(parts) != 3:
+        raise ValueError(
+            f"Formato de fecha inválido: {date_str}. Se esperaba DD.MMM.YYYY"
+        )
+
+    day, month_abbr, year = parts
+    month = month_map.get(month_abbr.lower())
+    if month is None:
+        raise ValueError(f"Mes inválido: {month_abbr}. Se esperaba mes abreviado")
+    return f"{year}-{month}-{day.zfill(2)}"
 
 
 def parse_value(value: str) -> float:
@@ -73,17 +79,13 @@ def get_uf_data(url: str = DEFAULT_URL) -> pd.DataFrame:
 
 
 def save_to_json(df: pd.DataFrame, source: str, output_path: str) -> None:
-    """Guarda los datos en formato JSON con la estructura requerida."""
+    data = {
+        "data": df.to_dict(orient="records"),  # type: ignore
+        "updated_at": datetime.now().isoformat(),
+        "source": source,
+    }
     with open(output_path, "w") as f:
-        json.dump(
-            {
-                "data": df.to_dict(orient="records"),  # type: ignore
-                "updated_at": datetime.now().isoformat(),
-                "source": source,
-            },
-            f,
-            indent=2,
-        )
+        json.dump(data, f, indent=2)
     logger.info(f"Datos guardados en {output_path} desde {source}")
 
 
@@ -94,13 +96,12 @@ def retrieve_data(output_path: str):
 
 if __name__ == "__main__":
     import argparse
-    from pathlib import Path
 
     parser = argparse.ArgumentParser(description="Scrapear datos de la UF.")
     parser.add_argument(
         "--output",
         type=str,
-        default=str(Path(__file__).parent.parent / "www/data/uf.json"),
+        default="www/data/uf.json",
         help="Ruta del archivo de salida JSON.",
     )
 
