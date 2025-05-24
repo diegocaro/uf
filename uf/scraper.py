@@ -81,7 +81,7 @@ def get_uf_data(url: str = DEFAULT_URL) -> pd.DataFrame:
 def save_to_json(df: pd.DataFrame, source: str, output_path: str) -> None:
     data = {
         "data": df.to_dict(orient="records"),  # type: ignore
-        "updated_at": datetime.now().isoformat(),
+        "updated_at": datetime.now().astimezone().isoformat(),
         "source": source,
     }
     with open(output_path, "w") as f:
