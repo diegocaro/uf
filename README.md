@@ -15,6 +15,14 @@ Extrae automáticamente los valores de la **Unidad de Fomento (UF)** desde el si
 
 ---
 
+## 🌍 Hosting
+
+> **📡 Hosting listo para producción**
+> La carpeta `docs/` está configurada para ser servida directamente mediante **GitHub Pages** (o cualquier otro servicio de hosting estático), permitiendo un acceso web inmediato a los datos y al conversor actualizado. Simplemente *push & deploy*.
+
+
+---
+
 ## 🧰 Requisitos
 
 * Python `3.12+`
@@ -48,10 +56,7 @@ uv run python -m uf.scraper
 ```
 
 Esto generará:
-
-* 📄 `www/data/uf.json` — Archivo con los datos actualizados.
-* 🌐 `www/index.html` — Página web lista para abrir en tu navegador.
-* 🔁 Carga dinámica de datos vía JavaScript + conversor funcional UF/CLP.
+* 📄 `docs/data/uf.json` — Archivo con los datos actualizados.
 
 También puedes definir una ruta de salida personalizada:
 
@@ -70,7 +75,7 @@ uf/
 ├── tests/           # Pruebas con pytest
 │   ├── test_scraper.py
 │   └── data/        # Fixtures: HTML crudo y JSON esperado
-├── www/             # Sitio web generado
+├── docs/            # Sitio web generado
 │   ├── index.html
 │   └── data/uf.json # Los datos extraídos y procesados
 ├── pyproject.toml   # Configuración de proyecto

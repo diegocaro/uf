@@ -40,6 +40,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add www/data/uf.json
+        git add docs/data/uf.json
         git commit -m "🤖 Automatic update of UF data - $(date +'%Y-%m-%d %H:%M:%S')"
         git push
