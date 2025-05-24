@@ -2,10 +2,9 @@
 name = "uf"
 version = "0.1.0"
 description = "Scraper para obtener valores de la UF desde el Banco Central de Chile"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "pandas",
-    "jinja2",
     "lxml",
 ]
 
