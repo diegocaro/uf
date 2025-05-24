@@ -101,7 +101,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--output",
         type=str,
-        default="www/data/uf.json",
+        default="docs/data/uf.json",
         help="Ruta del archivo de salida JSON.",
     )
 
