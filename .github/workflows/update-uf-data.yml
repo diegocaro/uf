@@ -27,7 +27,7 @@ jobs:
         
     - name: Run UF scraper
       run: |
-        uv run python uf/scraper.py --output www/data/uf.json
+        uv run python uf/scraper.py --output docs/data/uf.json
         
     - name: Check for changes
       id: verify-changed-files
