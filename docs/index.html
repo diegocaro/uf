@@ -146,8 +146,9 @@
   </main>
 
   <footer>
-    Fuente: <a href="" id="sourceLink" target="_blank">Banco Central</a> · Actualizado el <a href="data/uf.json" download="uf.json" title="Descargar datos en formato JSON" id="dataExtractedText"></a><br>
-    Repositorio: <a href="https://github.com/diegocaro/uf">GitHub 🔗</a>
+    Fuente: <a href="" id="sourceLink" target="_blank">Banco Central</a> · <!-- <br /> -->
+    <!-- <a href="data/uf.json" download="uf.json" title="Descargar datos en formato JSON" id="dataExtractedText">JSON</a> ·  -->
+    <a href="https://github.com/diegocaro/uf">GitHub 🔗</a>
   </footer>
 
   <script>
@@ -198,14 +199,14 @@
         });
         document.querySelector('h1').textContent = formatter.format(new Date(ufData.fecha + 'T12:00:00'));
         
-        // Update source date in footer
-        const updateDateObj = new Date(data.updated_at);
-        const footerDateStr = updateDateObj.toLocaleDateString('es-CL', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric'
-        });
-        document.getElementById('dataExtractedText').textContent = `${footerDateStr}`;
+        // // Update source date in footer
+        // const updateDateObj = new Date(data.updated_at);
+        // const footerDateStr = updateDateObj.toLocaleDateString('es-CL', {
+        //   day: 'numeric',
+        //   month: 'long',
+        //   year: 'numeric'
+        // });
+        // document.getElementById('dataExtractedText').textContent = `${footerDateStr}`;
         
         // Update the conversion with the new UF value
         updateConversion();
