@@ -277,6 +277,17 @@
         }, 2000);
       }
     });
+
+    // Mantener el cursor al final del input en dispositivos móviles
+    ufInput.addEventListener('focus', () => {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile && ufInput.setSelectionRange) {
+        const len = ufInput.value.length;
+        requestAnimationFrame(() => {
+          ufInput.setSelectionRange(len, len);
+        });
+      }
+    });
   </script>
 </body>
 </html>
