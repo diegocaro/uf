@@ -185,6 +185,10 @@
       background-color: #f8fafc;
     }
 
+    .clp-output {
+      background:#f5f7f9; 
+    }
+
     @media (max-width: 480px) {
       .conversion-input input {
         font-size: 1.1rem;
@@ -210,7 +214,7 @@
         <div class="tooltip-container">
           <div class="conversion-input clickable" id="clpContainer">
             <div class="currency-label">CLP</div>
-            <input type="text" id="clpOutput" aria-label="Monto en pesos chilenos (CLP)" readonly style="background:#f5f7f9;" />
+            <input type="text" id="clpOutput" aria-label="Monto en pesos chilenos (CLP)" readonly class="clp-output clickable" />
           </div>
           <div class="tooltip-text" id="copyTooltip">¡Copiado!</div>
         </div>
