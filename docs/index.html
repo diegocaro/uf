@@ -8,7 +8,7 @@
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
       max-width: 600px;
-      margin: 40px auto;
+      margin: 20px auto;
       padding: 20px;
       text-align: center;
       background: #f8fafc;
@@ -76,10 +76,18 @@
       letter-spacing: 0.5px;
     }
 
+    main {
+      min-height: 65vh;
+    }
+
     footer {
-      margin-top: 40px;
+      margin-top: 3rem;
       font-size: 0.9rem;
       color: #555;
+    }
+
+    footer p {
+      margin: 0;
     }
 
     footer a {
@@ -89,6 +97,28 @@
 
     footer a:hover {
       text-decoration: underline;
+    }
+
+    .footer-small-text {
+      color: #aaa;
+      font-size: 0.7rem;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+    }
+
+    .footer-link-with-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3em;
+    }
+
+    .footer-icon {
+      vertical-align: middle;
     }
 
     input[type=number]::-webkit-inner-spin-button, 
@@ -110,26 +140,34 @@
   </style>
 </head>
 <body>
-  <h1></h1>
-  
-  <div class="conversion-container">
-      <div class="conversion-input">
-        <div class="currency-label">UF</div>
-        <input type="text" id="ufInput" inputmode="decimal" aria-label="Monto en UF" placeholder="22,5" title="Ingrese un UF a convertir (ej: 22,5)" />
-      </div>
-      
-      <div class="conversion-input">
-        <div class="currency-label">CLP</div>
-        <input type="text" id="clpOutput" aria-label="Monto en pesos chilenos (CLP)" readonly style="background:#f5f7f9;" />
-      </div>
-    <span id="copyFeedback" style="display:none;color:#15803d;font-size:1rem;margin-top:0.5em;">¡Copiado al portapapeles!</span>
-  </div>
-  
-  <div class="uf-footer" id="valorUF"></div>
-
+  <main>
+    <h1></h1>
+    
+    <div class="conversion-container">
+        <div class="conversion-input">
+          <div class="currency-label">UF</div>
+          <input type="text" id="ufInput" inputmode="decimal" aria-label="Monto en UF" placeholder="22,5" title="Ingrese un UF a convertir (ej: 22,5)" />
+        </div>
+        
+        <div class="conversion-input">
+          <div class="currency-label">CLP</div>
+          <input type="text" id="clpOutput" aria-label="Monto en pesos chilenos (CLP)" readonly style="background:#f5f7f9;" />
+        </div>
+      <span id="copyFeedback" style="display:none;color:#15803d;font-size:1rem;margin-top:0.5em;">¡Copiado al portapapeles!</span>
+    </div>
+    
+    <div class="uf-footer" id="valorUF"></div>
+  </main>
   <footer>
-    Fuente: <a href="" id="sourceLink" target="_blank">Banco Central</a> · Actualizado el <a href="data/uf.json" download="uf.json" title="Descargar datos en formato JSON" id="dataExtractedText"></a><br>
-    Repositorio: <a href="https://github.com/diegocaro/uf">GitHub 🔗</a>
+    <p class="footer-links">
+      <a href="https://github.com/diegocaro/uf" class="footer-link-with-icon">
+        <img src="static/github-mark.png" width="16" height="16" alt="GitHub" class="footer-icon">
+        GitHub
+      </a>
+      <span>·</span>
+      <span>Fuente: <a href="" id="sourceLink" target="_blank">Banco Central</a></span>
+    </p>
+    <p><a href="data/uf.json" download="uf.json" title="Descargar datos en formato JSON" id="dataExtractedText" class="footer-small-text"></a></p>
   </footer>
 
   <script>
@@ -182,11 +220,7 @@
         
         // Update source date in footer
         const updateDateObj = new Date(data.updated_at);
-        const footerDateStr = updateDateObj.toLocaleDateString('es-CL', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric'
-        });
+        const footerDateStr = updateDateObj.toISOString();
         document.getElementById('dataExtractedText').textContent = `${footerDateStr}`;
         
         // Update the conversion with the new UF value
