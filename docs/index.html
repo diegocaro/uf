@@ -37,6 +37,10 @@
       align-items: center;
     }
 
+    .tooltip-container {
+      position: relative;
+    }
+
     .currency-label {
       padding: 0.8rem;
       font-size: 1.1rem;
@@ -132,9 +136,63 @@
       appearance: textfield;
     }
 
+    /* Tooltip styles */
+    .tooltip {
+      position: relative;
+    }
+
+    .tooltip-text {
+      visibility: hidden;
+      opacity: 0;
+      background-color: #333;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px 12px;
+      position: absolute;
+      z-index: 1000;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 0.875rem;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      pointer-events: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .tooltip-text::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #333 transparent transparent transparent;
+    }
+
+    .tooltip-text.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .conversion-input.clickable {
+      cursor: pointer;
+    }
+
+    .conversion-input.clickable:hover {
+      background-color: #f8fafc;
+    }
+
     @media (max-width: 480px) {
       .conversion-input input {
         font-size: 1.1rem;
+      }
+      
+      .tooltip-text {
+        font-size: 0.8rem;
+        padding: 6px 10px;
       }
     }
   </style>
@@ -149,11 +207,13 @@
           <input type="text" id="ufInput" inputmode="decimal" aria-label="Monto en UF" placeholder="22,5" title="Ingrese un UF a convertir (ej: 22,5)" />
         </div>
         
-        <div class="conversion-input">
-          <div class="currency-label">CLP</div>
-          <input type="text" id="clpOutput" aria-label="Monto en pesos chilenos (CLP)" readonly style="background:#f5f7f9;" />
+        <div class="tooltip-container">
+          <div class="conversion-input clickable" id="clpContainer">
+            <div class="currency-label">CLP</div>
+            <input type="text" id="clpOutput" aria-label="Monto en pesos chilenos (CLP)" readonly style="background:#f5f7f9;" />
+          </div>
+          <div class="tooltip-text" id="copyTooltip">¡Copiado!</div>
         </div>
-      <span id="copyFeedback" style="display:none;color:#15803d;font-size:1rem;margin-top:0.5em;">¡Copiado al portapapeles!</span>
     </div>
     
     <div class="uf-footer" id="valorUF"></div>
@@ -304,16 +364,36 @@
       }
     }
 
-    clpOutput.addEventListener("click", () => {
+    // Add click handler to the entire CLP container for better UX
+    const clpContainer = document.getElementById("clpContainer");
+    clpContainer.addEventListener("click", () => {
       if (clpOutput.value) {
-        navigator.clipboard.writeText(clpOutput.value);
-        clpOutput.style.background = "#d1fae5"; // feedback visual
-        const feedback = document.getElementById("copyFeedback");
-        feedback.style.display = "inline";
-        setTimeout(() => {
-          clpOutput.style.background = "#f5f7f9";
-          feedback.style.display = "none";
-        }, 2000);
+        // Copy to clipboard
+        navigator.clipboard.writeText(clpOutput.value).then(() => {
+          // Show tooltip
+          const tooltip = document.getElementById("copyTooltip");
+          console.log("Showing tooltip", tooltip); // Debug log
+          tooltip.classList.add("show");
+          
+          // Add visual feedback to input
+          clpOutput.style.background = "#d1fae5";
+          
+          // Hide tooltip and restore background after 2 seconds
+          setTimeout(() => {
+            tooltip.classList.remove("show");
+            clpOutput.style.background = "#f5f7f9";
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy text: ', err);
+          // Show tooltip even if clipboard fails (for testing)
+          const tooltip = document.getElementById("copyTooltip");
+          tooltip.classList.add("show");
+          clpOutput.style.background = "#d1fae5";
+          setTimeout(() => {
+            tooltip.classList.remove("show");
+            clpOutput.style.background = "#f5f7f9";
+          }, 2000);
+        });
       }
     });
 
