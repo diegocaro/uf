@@ -187,7 +187,12 @@
         const data = await response.json();
         
         // Get current date in Chile timezone in YYYY-MM-DD format
-        const dateFormatter = new Intl.DateTimeFormat('en-CA', {timeZone: 'America/Santiago'});
+        const dateFormatter = new Intl.DateTimeFormat('en-CA', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          timeZone: 'America/Santiago'
+        });
         const currentDate = dateFormatter.format(new Date());
         
         // Find the current date in the dataset
