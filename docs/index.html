@@ -86,6 +86,10 @@
       color: #555;
     }
 
+    footer p {
+      margin: 0;
+    }
+
     footer a {
       color: #0f62fe;
       text-decoration: none;
@@ -93,6 +97,28 @@
 
     footer a:hover {
       text-decoration: underline;
+    }
+
+    .footer-small-text {
+      color: #aaa;
+      font-size: 0.7rem;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+    }
+
+    .footer-link-with-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3em;
+    }
+
+    .footer-icon {
+      vertical-align: middle;
     }
 
     input[type=number]::-webkit-inner-spin-button, 
@@ -133,8 +159,15 @@
     <div class="uf-footer" id="valorUF"></div>
   </main>
   <footer>
-    Fuente: <a href="" id="sourceLink" target="_blank">Banco Central</a> · <a href="https://github.com/diegocaro/uf">GitHub 🔗</a> <br />
-    <a href="data/uf.json" download="uf.json" title="Descargar datos en formato JSON" id="dataExtractedText"></a><br>
+    <p class="footer-links">
+      <a href="https://github.com/diegocaro/uf" class="footer-link-with-icon">
+        <img src="static/github-mark.png" width="16" height="16" alt="GitHub" class="footer-icon">
+        GitHub
+      </a>
+      <span>·</span>
+      <span>Fuente: <a href="" id="sourceLink" target="_blank">Banco Central</a></span>
+    </p>
+    <p><a href="data/uf.json" download="uf.json" title="Descargar datos en formato JSON" id="dataExtractedText" class="footer-small-text"></a></p>
   </footer>
 
   <script>
@@ -187,11 +220,7 @@
         
         // Update source date in footer
         const updateDateObj = new Date(data.updated_at);
-        const footerDateStr = updateDateObj.toLocaleDateString('es-CL', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric'
-        });
+        const footerDateStr = updateDateObj.toISOString();
         document.getElementById('dataExtractedText').textContent = `${footerDateStr}`;
         
         // Update the conversion with the new UF value
