@@ -189,6 +189,76 @@
       background:#f5f7f9; 
     }
 
+    /* Date selector styles */
+    .date-selector-integrated {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 3rem;
+      gap: 0;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .nav-btn {
+      padding: 0.5rem 1rem;
+      font-size: 1.2rem;
+      border: 1px solid #d0d7de;
+      background: white;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-width: 44px;
+      height: 44px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 400;
+    }
+
+    .nav-btn-left {
+      border-radius: 6px 0 0 6px;
+      border-right: none;
+    }
+
+    .nav-btn-right {
+      border-radius: 0 6px 6px 0;
+      border-left: none;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: #f5f7f9;
+      color: #0f62fe;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .custom-date-picker {
+      padding: 0.5rem 1rem;
+      font-size: 1.1rem;
+      border: 1px solid #d0d7de;
+      background: white;
+      color: #222;
+      cursor: pointer;
+      flex: 1;
+      text-align: center;
+      height: 44px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .custom-date-picker:hover {
+      background: #f8fafc;
+    }
+
     @media (max-width: 480px) {
       .conversion-input input {
         font-size: 1.1rem;
@@ -204,6 +274,15 @@
 <body>
   <main>
     <h1></h1>
+    
+    <div class="date-selector-integrated">
+      <button id="prevDay" class="nav-btn nav-btn-left">‹</button>
+      <div class="custom-date-picker" id="customDatePicker">
+        <span id="dateDisplay">Seleccionar fecha</span>
+        <input type="date" id="dateInput" style="opacity: 0; position: absolute; pointer-events: none;" />
+      </div>
+      <button id="nextDay" class="nav-btn nav-btn-right">›</button>
+    </div>
     
     <div class="conversion-container">
         <div class="conversion-input">
@@ -236,56 +315,154 @@
 
   <script>
     let UF_VALUE = 0;
+    let UF_DATA = null;
+    let CURRENT_DATE = null;
     const defaultInput = "22,5";
     const ufInput = document.getElementById("ufInput");
     const clpOutput = document.getElementById("clpOutput");
+    const dateInput = document.getElementById("dateInput");
+    const prevDayBtn = document.getElementById("prevDay");
+    const nextDayBtn = document.getElementById("nextDay");
     
     // Cargar valor guardado o usar valor predeterminado
     const savedUF = localStorage.getItem("lastUF") || defaultInput;
     ufInput.value = savedUF;
     
+    // Get date from URL parameter
+    function getDateFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const dateParam = urlParams.get('date');
+      if (dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam)) {
+        return dateParam;
+      }
+      return null;
+    }
+    
+    // Update URL with current date
+    function updateURL(date) {
+      const url = new URL(window.location);
+      if (date) {
+        url.searchParams.set('date', date);
+      } else {
+        url.searchParams.delete('date');
+      }
+      window.history.replaceState({}, '', url);
+    }
+    
+    // Get current date in Chile timezone
+    function getCurrentChileDate() {
+      const dateFormatter = new Intl.DateTimeFormat('en-CA', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'America/Santiago'
+      });
+      return dateFormatter.format(new Date());
+    }
+    
+    // Update date display in Spanish format
+    function updateDateDisplay(date) {
+      const formatter = new Intl.DateTimeFormat('es-CL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+      document.getElementById('dateDisplay').textContent = formatter.format(new Date(date + 'T12:00:00'));
+    }
+    
+    // Custom date picker click handler
+    document.getElementById('customDatePicker').addEventListener('click', () => {
+      dateInput.showPicker();
+    });
+    
+    // Double-click to go to today
+    document.getElementById('customDatePicker').addEventListener('dblclick', () => {
+      fetchUFValue(getCurrentChileDate());
+    });
+    
+    // Find available dates around a target date
+    function findAvailableDate(targetDate, data) {
+      // First try exact match
+      let ufData = data.data.find(item => item.fecha === targetDate);
+      if (ufData) return ufData;
+      
+      // If not found, find the closest available date (preferring earlier dates)
+      const availableDates = data.data.map(item => item.fecha).sort();
+      const targetTime = new Date(targetDate).getTime();
+      
+      let closestDate = null;
+      let minDiff = Infinity;
+      
+      for (const date of availableDates) {
+        const dateTime = new Date(date).getTime();
+        const diff = Math.abs(dateTime - targetTime);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestDate = date;
+        }
+      }
+      
+      return data.data.find(item => item.fecha === closestDate);
+    }
+    
+    // Update navigation buttons state
+    function updateNavigationButtons() {
+      if (!UF_DATA || !CURRENT_DATE) return;
+      
+      const availableDates = UF_DATA.data.map(item => item.fecha).sort();
+      const currentIndex = availableDates.indexOf(CURRENT_DATE);
+      
+      prevDayBtn.disabled = currentIndex <= 0;
+      nextDayBtn.disabled = currentIndex >= availableDates.length - 1;
+    }
+    
+    // Set date range for date input
+    function setDateInputRange() {
+      if (!UF_DATA) return;
+      
+      const availableDates = UF_DATA.data.map(item => item.fecha).sort();
+      const minDate = availableDates[0];
+      const maxDate = availableDates[availableDates.length - 1];
+      
+      dateInput.min = minDate;
+      dateInput.max = maxDate;
+    }
+    
     // Fetch UF value from JSON file
-    async function fetchUFValue() {
+    async function fetchUFValue(targetDate = null) {
       try {
         const response = await fetch('data/uf.json');
         const data = await response.json();
+        UF_DATA = data;
         
-        // Get current date in Chile timezone in YYYY-MM-DD format
-        const dateFormatter = new Intl.DateTimeFormat('en-CA', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          timeZone: 'America/Santiago'
-        });
-        const currentDate = dateFormatter.format(new Date());
+        // Determine which date to use
+        let selectedDate = targetDate || getDateFromURL() || getCurrentChileDate();
         
-        // Find the current date in the dataset
-        let ufData = data.data.find(item => item.fecha === currentDate);
+        // Find the UF data for the selected date (or closest available)
+        let ufData = findAvailableDate(selectedDate, data);
         
-        // If current date not found, get the latest date
+        // If still no data found, get the latest date
         if (!ufData) {
-          // Sort by date in descending order and get the first item
           ufData = [...data.data].sort((a, b) => 
             new Date(b.fecha) - new Date(a.fecha)
           )[0];
         }
         
-        // Set UF value
+        // Set current values
         UF_VALUE = ufData.valor;
+        CURRENT_DATE = ufData.fecha;
+        
+        // Update UI elements
+        dateInput.value = CURRENT_DATE;
+        updateDateDisplay(CURRENT_DATE);
+        updateURL(CURRENT_DATE !== getCurrentChileDate() ? CURRENT_DATE : null);
+        setDateInputRange();
+        updateNavigationButtons();
         
         // Set source link
         if (data.source) {
           document.getElementById("sourceLink").href = data.source;
         }
-        
-        // Update the date in the heading
-        const formatter = new Intl.DateTimeFormat('es-CL', {
-          day: 'numeric',
-          month: 'long', 
-          year: 'numeric',
-          timeZone: 'America/Santiago'
-        });
-        document.querySelector('h1').textContent = formatter.format(new Date(ufData.fecha + 'T12:00:00'));
         
         // Update source date in footer
         const updateDateObj = new Date(data.updated_at);
@@ -301,6 +478,37 @@
     
     // Load UF data when page loads
     fetchUFValue();
+    
+    // Date input change event
+    dateInput.addEventListener('change', () => {
+      fetchUFValue(dateInput.value);
+    });
+    
+    // Previous day button click event
+    prevDayBtn.addEventListener('click', () => {
+      if (!UF_DATA || !CURRENT_DATE) return;
+      
+      const availableDates = UF_DATA.data.map(item => item.fecha).sort();
+      const currentIndex = availableDates.indexOf(CURRENT_DATE);
+      
+      if (currentIndex > 0) {
+        const prevDate = availableDates[currentIndex - 1];
+        fetchUFValue(prevDate);
+      }
+    });
+    
+    // Next day button click event
+    nextDayBtn.addEventListener('click', () => {
+      if (!UF_DATA || !CURRENT_DATE) return;
+      
+      const availableDates = UF_DATA.data.map(item => item.fecha).sort();
+      const currentIndex = availableDates.indexOf(CURRENT_DATE);
+      
+      if (currentIndex < availableDates.length - 1) {
+        const nextDate = availableDates[currentIndex + 1];
+        fetchUFValue(nextDate);
+      }
+    });
 
     // Actualizar al cambiar el valor de entrada
     ufInput.addEventListener("input", () => {
