@@ -201,6 +201,38 @@
       margin-right: auto;
     }
 
+    #dateDisplay {
+      flex: 1;
+      min-width: 180px;
+      padding: 0.5rem 1.5rem;
+      font-size: 1.1rem;
+      background: white;
+      color: #222;
+      border: 1px solid #d0d7de;
+      border-left: none;
+      border-right: none;
+      text-align: center;
+      height: 44px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 0;
+      transition: background 0.2s;
+    }
+    #dateDisplay:hover {
+      background: #f8fafc;
+    }
+    .nav-btn-left {
+      border-radius: 6px 0 0 6px;
+      border-right: none;
+    }
+    .nav-btn-right {
+      border-radius: 0 6px 6px 0;
+      border-left: none;
+    }
+
     .nav-btn {
       padding: 0.5rem 1rem;
       font-size: 1.2rem;
@@ -277,10 +309,7 @@
     
     <div class="date-selector-integrated">
       <button id="prevDay" class="nav-btn nav-btn-left">‹</button>
-      <div class="custom-date-picker" id="customDatePicker">
-        <span id="dateDisplay">Seleccionar fecha</span>
-        <input type="date" id="dateInput" style="opacity: 0; position: absolute; pointer-events: none;" />
-      </div>
+      <span id="dateDisplay">Seleccionar fecha</span>
       <button id="nextDay" class="nav-btn nav-btn-right">›</button>
     </div>
     
@@ -320,7 +349,6 @@
     const defaultInput = "22,5";
     const ufInput = document.getElementById("ufInput");
     const clpOutput = document.getElementById("clpOutput");
-    const dateInput = document.getElementById("dateInput");
     const prevDayBtn = document.getElementById("prevDay");
     const nextDayBtn = document.getElementById("nextDay");
     
@@ -370,16 +398,6 @@
       document.getElementById('dateDisplay').textContent = formatter.format(new Date(date + 'T12:00:00'));
     }
     
-    // Custom date picker click handler
-    document.getElementById('customDatePicker').addEventListener('click', () => {
-      dateInput.showPicker();
-    });
-    
-    // Double-click to go to today
-    document.getElementById('customDatePicker').addEventListener('dblclick', () => {
-      fetchUFValue(getCurrentChileDate());
-    });
-    
     // Find available dates around a target date
     function findAvailableDate(targetDate, data) {
       // First try exact match
@@ -416,18 +434,6 @@
       nextDayBtn.disabled = currentIndex >= availableDates.length - 1;
     }
     
-    // Set date range for date input
-    function setDateInputRange() {
-      if (!UF_DATA) return;
-      
-      const availableDates = UF_DATA.data.map(item => item.fecha).sort();
-      const minDate = availableDates[0];
-      const maxDate = availableDates[availableDates.length - 1];
-      
-      dateInput.min = minDate;
-      dateInput.max = maxDate;
-    }
-    
     // Fetch UF value from JSON file
     async function fetchUFValue(targetDate = null) {
       try {
@@ -453,10 +459,8 @@
         CURRENT_DATE = ufData.fecha;
         
         // Update UI elements
-        dateInput.value = CURRENT_DATE;
         updateDateDisplay(CURRENT_DATE);
         updateURL(CURRENT_DATE !== getCurrentChileDate() ? CURRENT_DATE : null);
-        setDateInputRange();
         updateNavigationButtons();
         
         // Set source link
@@ -478,11 +482,6 @@
     
     // Load UF data when page loads
     fetchUFValue();
-    
-    // Date input change event
-    dateInput.addEventListener('change', () => {
-      fetchUFValue(dateInput.value);
-    });
     
     // Previous day button click event
     prevDayBtn.addEventListener('click', () => {
@@ -618,6 +617,10 @@
           ufInput.setSelectionRange(len, len);
         });
       }
+    });
+
+    document.getElementById('dateDisplay').addEventListener('click', () => {
+      fetchUFValue(getCurrentChileDate());
     });
   </script>
 </body>
