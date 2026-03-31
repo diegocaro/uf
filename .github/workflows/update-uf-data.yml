@@ -3,7 +3,7 @@ name: Update UF Data
 on:
   schedule:
     # Run on the 9th and 10th of each month at 12:00 PM UTC
-    - cron: '0 12 9,10 * *'
+    - cron: '0 12 9,10,11 * *'
   workflow_dispatch: # Allow manual trigger
 
 permissions:
