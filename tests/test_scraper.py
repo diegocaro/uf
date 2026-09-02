@@ -9,7 +9,7 @@ import tempfile
 import pandas as pd
 import pytest
 
-from uf.scraper import get_uf_data, save_to_json
+from uf.scraper import get_uf_data, keep_last_months, merge_uf_data, save_to_json
 
 
 @pytest.fixture
@@ -69,6 +69,57 @@ def test_save_to_json():
     assert json_data["data"][0]["valor"] == 38419.17
     assert json_data["data"][1]["fecha"] == "2025-01-02"
     assert json_data["data"][1]["valor"] == 38421.65
+
+
+def test_merge_uf_data_keeps_previous_days_on_year_change():
+    """
+    Al cambiar de año, la tabla del sitio solo trae el año nuevo; el merge
+    no debe perder los días restantes de diciembre ya guardados.
+    """
+    existing = pd.DataFrame(
+        {
+            "fecha": ["2025-12-30", "2025-12-31"],
+            "valor": [39020.0, 39030.0],
+        }
+    )
+    new = pd.DataFrame(
+        {
+            "fecha": ["2026-01-01", "2026-01-02"],
+            "valor": [39040.0, 39050.0],
+        }
+    )
+
+    merged = merge_uf_data(existing, new)
+
+    assert list(merged["fecha"]) == [
+        "2025-12-30",
+        "2025-12-31",
+        "2026-01-01",
+        "2026-01-02",
+    ]
+
+
+def test_merge_uf_data_prefers_new_value_on_overlap():
+    existing = pd.DataFrame({"fecha": ["2026-01-01"], "valor": [1.0]})
+    new = pd.DataFrame({"fecha": ["2026-01-01"], "valor": [2.0]})
+
+    merged = merge_uf_data(existing, new)
+
+    assert len(merged) == 1
+    assert merged.iloc[0]["valor"] == 2.0
+
+
+def test_keep_last_months_discards_older_rows():
+    df = pd.DataFrame(
+        {
+            "fecha": ["2024-01-01", "2025-06-01", "2026-01-01"],
+            "valor": [1.0, 2.0, 3.0],
+        }
+    )
+
+    result = keep_last_months(df, months=12)
+
+    assert list(result["fecha"]) == ["2025-06-01", "2026-01-01"]
 
 
 def test_compare_with_expected_data():
