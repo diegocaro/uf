@@ -61,7 +61,7 @@ Esto generará:
 También puedes definir una ruta de salida personalizada:
 
 ```bash
-uv run python -m uf.scraper --output ruta/personalizada/uf.json
+uv run python -m uf.scraper ruta/personalizada/uf.json
 ```
 
 ---

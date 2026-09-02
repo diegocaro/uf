@@ -6,6 +6,7 @@ Utiliza pandas para extraer los datos de las tablas HTML.
 import json
 import logging
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 
@@ -78,20 +79,56 @@ def get_uf_data(url: str = DEFAULT_URL) -> pd.DataFrame:
     raise ValueError("No se encontró la tabla de UF en la página.")
 
 
-def save_to_json(df: pd.DataFrame, source: str, output_path: str) -> None:
+def load_existing_data(output_path: Path) -> pd.DataFrame:
+    """Carga los datos previamente guardados, si el archivo existe."""
+    if not output_path.exists():
+        return pd.DataFrame(columns=["fecha", "valor"])
+
+    try:
+        with output_path.open() as f:
+            data = json.load(f)
+        df = pd.DataFrame(data.get("data", []), columns=["fecha", "valor"])
+        return df
+    except (json.JSONDecodeError, OSError) as e:
+        logger.warning(f"No se pudo leer {output_path}, se ignora: {e}")
+        return pd.DataFrame(columns=["fecha", "valor"])
+
+
+def merge_uf_data(existing: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
+    """Combina datos existentes con datos nuevos, priorizando los nuevos."""
+    combined = pd.concat([existing, new], ignore_index=True)
+    combined = combined.drop_duplicates(subset="fecha", keep="last")
+    return combined.sort_values("fecha", ignore_index=True)
+
+
+def keep_last_months(df: pd.DataFrame, months: int = 12) -> pd.DataFrame:
+    """Descarta filas con fecha anterior a `months` meses antes de la fecha más reciente."""
+    if df.empty:
+        return df
+
+    fechas = pd.to_datetime(df["fecha"])
+    cutoff = fechas.max() - pd.DateOffset(months=months)
+    return df[fechas >= cutoff].reset_index(drop=True)
+
+
+def save_to_json(df: pd.DataFrame, source: str, output_path: Path) -> None:
     data = {
         "data": df.to_dict(orient="records"),  # type: ignore
         "updated_at": datetime.now().astimezone().isoformat(),
         "source": source,
     }
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(data, f, indent=2)
     logger.info(f"Datos guardados en {output_path} desde {source}")
 
 
-def retrieve_data(output_path: str):
-    """Obtiene datos de la UF y los guarda en un archivo JSON."""
-    save_to_json(get_uf_data(), DEFAULT_URL, output_path)
+def retrieve_data(output_path: Path):
+    """Obtiene datos de la UF, los combina con los existentes y los guarda en un archivo JSON."""
+    existing = load_existing_data(output_path)
+    new = get_uf_data()
+    merged = merge_uf_data(existing, new)
+    merged = keep_last_months(merged, months=12)
+    save_to_json(merged, DEFAULT_URL, output_path)
 
 
 if __name__ == "__main__":
@@ -99,10 +136,11 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Scrapear datos de la UF.")
     parser.add_argument(
-        "--output",
-        type=str,
-        default="docs/data/uf.json",
-        help="Ruta del archivo de salida JSON.",
+        "archivo",
+        type=Path,
+        nargs="?",
+        default=Path("docs/data/uf.json"),
+        help="Ruta del archivo JSON a actualizar.",
     )
 
-    retrieve_data(parser.parse_args().output)
+    retrieve_data(parser.parse_args().archivo)
