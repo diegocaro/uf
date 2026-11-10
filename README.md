@@ -25,7 +25,7 @@ Extrae automáticamente los valores de la **Unidad de Fomento (UF)** desde el si
 
 ## 🧰 Requisitos
 
-* Python `3.12+`
+* Python `3.14+`
 * [`uv`](https://github.com/astral-sh/uv) para gestión de dependencias (¡más rápido que pip!)
 
 ---
